@@ -5,7 +5,7 @@
 //Pay attention to whether the program is giving your the correct result
 //Note the result of sum from 1 to n should be n*(n+1)/2
 //You can use this formula to check the result geneated by the code.
-//From the above inputs for n, find the minimum n that geneates a wrong result,
+//From the above inputs for n, find the minimum n that geneates a wrong result, ---- 65536 is the minimum number that causes an error
 //then first comment out the following part of the code from the main function.
 /* 
     int i, n, sum;
@@ -37,19 +37,22 @@
 #include <stdio.h>
 
 int main(void) {
-	int i, n, sum;
-	sum = 0;
-	printf("Enter n:\n");
-	scanf("%d", &n);
-	i = 1;
-	while (i <= n) {
-		sum = sum + i;
-		i = i + 1;
-	}
-	printf("Sum from 1 to %d = %d\n", n, sum);
+	// int i, n, sum;
+	// sum = 0;
+	// printf("Enter n:\n");
+	// scanf("%d", &n);
+	// i = 1;
+	// while (i <= n) {
+	// 	sum = sum + i;
+	// 	i = i + 1;
+	// }
+	// printf("Sum from 1 to %d = %d\n", n, sum);
 
-//	int N = 1000;
-//	print("Among 1, 10, 100, 1000, 10000, 100000, 1000000\n");
-//	print("The smallest number to break the code is %d\n", N);
+	int N = 100000;
+	print("Among 1, 10, 100, 1000, 10000, 100000, 1000000\n");
+	print("The smallest number to break the code is %d\n", N);
+
+
+
 	return 0;
 }
