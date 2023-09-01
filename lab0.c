@@ -11,7 +11,7 @@ int main(void)
         i += 2;
     }
 
-    printf("Hello, World!");
+    printf("Hello, World!\n");
     printf("%d\n", sum);
     return 0;
 }
