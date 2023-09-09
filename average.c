@@ -9,7 +9,7 @@ int main(void){
     int result;
 
     while(1){
-        result = scanf("%1f", &n);
+        result = scanf("%lf", &n);
 
         if(result != 1)
             break;
