@@ -20,13 +20,19 @@ int main()
 		//TO DO
 		//Fill in code below
 
+		for(i=1; i < 100; i++)
+		{
+			for(j=i; j< 100; j++){
+				if(j*j*j + i*i*i == n)
+				{
+					count += 1;
+				}
+			}
+		}
 
-
-
-
-
-
-
+		if(count >= 2){
+			break;
+		}
 	}
 
 
