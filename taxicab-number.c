@@ -38,7 +38,7 @@ int main()
 
 	//Do not change code below
     printf("%d is the solution:\n", n);
-	for(i=1; i<=100; i++)
+	for(i=1; i<=100; i++){
 		for(j = i; j<= 100; j++)
 			{
 				if (i*i*i + j*j*j == n)
@@ -46,7 +46,8 @@ int main()
 					printf("%d * %d * %d + %d * %d * %d = %d\n", i, i, i, j, j, j, n);
                 }
 			}
-
+	}
+	
 	return 0;
 	//Do not try to hard code the solution, that is not the way to learn.
 }
