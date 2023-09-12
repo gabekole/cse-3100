@@ -19,11 +19,21 @@
 //the sum of the 3 dice is at least k.
 //Finally, we return this probablity. 
 
-
-
-
-
-
+double cum_prob(int k, long int trials)
+{
+    int count = 0;
+    for(int i = 0; i < trials; i++)
+    {
+        int toss_one = rand() % 6 + 1;
+        int toss_two = rand() % 6 + 1;
+        int toss_three = rand() % 6 + 1;
+        
+        if (toss_one + toss_two + toss_three >= k)
+            count++;
+    }
+    double probability = ((double) count)/trials;
+    return probability;
+}
 
 
 
