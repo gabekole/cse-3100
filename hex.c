@@ -17,12 +17,21 @@ void dec_hex(int d, char hex[])
 	//If we are getting the digits in a reverse order, what should we do in the end?
 	
 
+	while( d > 0 )
+	{
+		char digit = digits[d%16];
+		hex[0] = digit;
+		d /= 16;
+		k += 1;
+	}
 
-
-
-
-
-
+	for(int i = 0; i < k/2; i++)
+	{
+		char temp = hex[k-i];
+		hex[k-i] = hex[i];
+		hex[i] = temp;
+	}
+	k += 1;
 
 	//Make sure the last character is a zero so that we can print the string correctly
 	hex[k] = '\0';
