@@ -14,8 +14,10 @@ long catalan_number(int n)
     if (n == 0)
         return 1;
 
-    int previous = catalan_number(n-1);
-    int factor = (4*n*previous - 2*previous)/(n+1);
+    long previous = catalan_number(n-1);
+    long result = (4*n*previous - 2*previous)/(n+1);
+
+    return result;
 }
 
 /* do not change main function */
