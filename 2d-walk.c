@@ -20,7 +20,7 @@ double two_d_random(int n)
 }
 
 //Do not change the code below
-int main()
+int main(int argc, char** argv)
 {
 	int trials = 1000;
 	int i, n, seed;
