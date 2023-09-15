@@ -20,7 +20,7 @@ void dec_hex(int d, char hex[])
 	while( d > 0 )
 	{
 		char digit = digits[d%16];
-		hex[0] = digit;
+		hex[k] = digit;
 		d /= 16;
 		k += 1;
 	}
