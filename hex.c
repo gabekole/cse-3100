@@ -27,11 +27,10 @@ void dec_hex(int d, char hex[])
 
 	for(int i = 0; i < k/2; i++)
 	{
-		char temp = hex[k-i];
-		hex[k-i] = hex[i];
+		char temp = hex[k-i-1];
+		hex[k-i-1] = hex[i];
 		hex[i] = temp;
 	}
-	k += 1;
 
 	//Make sure the last character is a zero so that we can print the string correctly
 	hex[k] = '\0';
