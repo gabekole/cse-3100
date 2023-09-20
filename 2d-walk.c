@@ -37,7 +37,7 @@ double two_d_random(int n)
 	}
 	double playArea = (2*n - 1)*(2*n - 1);
 
-	return ((double) steps)/playArea;
+	return ((double) steps- 1)/playArea;
 }
 
 //Do not change the code below
