@@ -12,11 +12,32 @@ double two_d_random(int n)
 	//The random walk should stop once the x coordinate or y coordinate reaches $-n$ or $n$. 
 	//The function should return the fraction of the visited $(x, y)$ coordinates inside (not including) the square.
 
+	int x = 0;
+	int y = 0;
+	int steps = 0;
+	while(x > -n && x < n && x > -n && x < n)
+	{
+		int r = rand() % 4;
+		switch(r)
+		{
+			case 0:
+				y++;
+				break;
+			case 1:
+				x++;
+				break;
+			case 2:
+				y--;
+				break;
+			case 3:
+				x--;
+				break;
+		}
+		steps++;
+	}
+	double playArea = (2*n - 1)*(2*n - 1);
 
-
-
-
-	
+	return ((double) steps)/playArea;
 }
 
 //Do not change the code below
