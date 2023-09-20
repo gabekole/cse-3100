@@ -12,59 +12,67 @@ double two_d_random(int n)
 	//The random walk should stop once the x coordinate or y coordinate reaches $-n$ or $n$. 
 	//The function should return the fraction of the visited $(x, y)$ coordinates inside (not including) the square.
 
+	int visited[2*n-1][2*n-1];
+	for(int i = 0; i < 2*n-1; i++)
+	{
+		for(int j = 0; j < 2*n-1; j++)
+		{
+			visited[i][j] = 0;
+		}
+	}
+
+
 	int x = 0;
 	int y = 0;
 
-	int visited[2*n - 1][2*n - 1];
-	memset(visited, 0, (2*n - 1)*(2*n - 1));
-
-	while(x > -n && x < n && x > -n && x < n)
+	while(-n < x && x < n && -n < y && y < n)
 	{
-		visited[y+n][x+n] = 1;
+		visited[y+n-1][x+n-1] = 1;
+
 		int r = rand() % 4;
-		switch(r)
+		if(r == 0)
+			y++;
+		else if(r == 1)
+			x++;
+		else if(r == 2)
+			y--;
+		else if(r == 3)
+			x--;
+
+	}
+
+	int totalVisited = 0;
+	for(int i = 0; i < 2*n-1; i++)
+	{
+		for(int j = 0; j < 2*n-1; j++)
 		{
-			case 0:
-				y++;
-				break;
-			case 1:
-				x++;
-				break;
-			case 2:
-				y--;
-				break;
-			case 3:
-				x--;
-				break;
+			totalVisited += visited[i][j];
 		}
 	}
-	double playArea = (2*n - 1)*(2*n - 1);
 
-	printf("%d\n", steps-1);
-
-	return ((double) steps- 1)/playArea;
+	return ((double) totalVisited)/((2.0*n-1.0)*(2.0*n-1.0));
 }
 
 //Do not change the code below
 int main(int argc, char** argv)
 {
-	// int trials = 1000;
-	// int i, n, seed;
-	// if (argc == 2) seed = atoi(argv[1]);
-	// else seed = 12345;
+	int trials = 1000;
+	int i, n, seed;
+	if (argc == 2) seed = atoi(argv[1]);
+	else seed = 12345;
 
-	// srand(seed);
-	// for(n=1; n<=64; n*=2)
-	// {	
-	// 	double sum = 0.;
-	// 	for(i=0; i < trials; i++)
-	// 	{
-	// 		double p = two_d_random(n);
-	// 		sum += p;
-	// 	}
-	// 	printf("%d %.3lf\n", n, sum/trials);
-	// }
-	two_d_random(2);
+	srand(seed);
+	for(n=1; n<=64; n*=2)
+	{	
+		double sum = 0.;
+		for(i=0; i < trials; i++)
+		{
+			double p = two_d_random(n);
+			sum += p;
+		}
+		printf("%d %.3lf\n", n, sum/trials);
+	}
+	// printf("%lf\n", two_d_random(2));
 	return 0;
 }
 
