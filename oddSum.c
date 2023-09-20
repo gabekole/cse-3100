@@ -1,14 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int oddSumHelp(int count, int bound, int value)
+int oddSumHelp(int count, int bound, int target)
 {
-	//fill in your code below
+	if(count == 0)
+		return target == 0;
+	if(bound <=0 )
+		return 0;
 	
+	int addCurrent = oddSumHelp(count-1, bound-2, target-bound);
 
+	if(addCurrent){
+		printf("%d ", bound);
+		return 1;
+	}
 
+	int dontAddCurrent = oddSumHelp(count, bound-2, target);
 
+	if(dontAddCurrent){
+		return 1;
+	}
 
+	return 0;
 }
 
 //Do not change the code below
