@@ -14,9 +14,13 @@ double two_d_random(int n)
 
 	int x = 0;
 	int y = 0;
-	int steps = 0;
+
+	int visited[2*n - 1][2*n - 1];
+	memset(visited, 0, (2*n - 1)*(2*n - 1));
+
 	while(x > -n && x < n && x > -n && x < n)
 	{
+		visited[y+n][x+n] = 1;
 		int r = rand() % 4;
 		switch(r)
 		{
@@ -33,9 +37,10 @@ double two_d_random(int n)
 				x--;
 				break;
 		}
-		steps++;
 	}
 	double playArea = (2*n - 1)*(2*n - 1);
+
+	printf("%d\n", steps-1);
 
 	return ((double) steps- 1)/playArea;
 }
@@ -43,22 +48,23 @@ double two_d_random(int n)
 //Do not change the code below
 int main(int argc, char** argv)
 {
-	int trials = 1000;
-	int i, n, seed;
-	if (argc == 2) seed = atoi(argv[1]);
-	else seed = 12345;
+	// int trials = 1000;
+	// int i, n, seed;
+	// if (argc == 2) seed = atoi(argv[1]);
+	// else seed = 12345;
 
-	srand(seed);
-	for(n=1; n<=64; n*=2)
-	{	
-		double sum = 0.;
-		for(i=0; i < trials; i++)
-		{
-			double p = two_d_random(n);
-			sum += p;
-		}
-		printf("%d %.3lf\n", n, sum/trials);
-	}
+	// srand(seed);
+	// for(n=1; n<=64; n*=2)
+	// {	
+	// 	double sum = 0.;
+	// 	for(i=0; i < trials; i++)
+	// 	{
+	// 		double p = two_d_random(n);
+	// 		sum += p;
+	// 	}
+	// 	printf("%d %.3lf\n", n, sum/trials);
+	// }
+	two_d_random(2);
 	return 0;
 }
 
