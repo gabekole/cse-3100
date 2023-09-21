@@ -25,6 +25,7 @@ unsigned sum_n_bytes(unsigned *p, int n)
 	for(int i = 0; i < n; i++)
 		sum += ((char *) p)[i];
 
+	return sum;
 }
 
 //Note how we use the command line arguments
