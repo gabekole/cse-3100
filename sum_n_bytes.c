@@ -23,7 +23,7 @@ unsigned sum_n_bytes(unsigned *p, int n)
 	unsigned int sum = 0;
 
 	for(int i = 0; i < n; i++)
-		sum += ((char *) p)[i];
+		sum += ((unsigned char *) p)[i];
 
 	return sum;
 }
