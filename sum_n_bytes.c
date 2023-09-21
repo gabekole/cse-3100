@@ -20,12 +20,10 @@ unsigned sum_n_bytes(unsigned *p, int n)
 	//Only a few lines of code expected
 
 
+	unsigned int sum = 0;
 
-
-
-
-
-
+	for(int i = 0; i < n; i++)
+		sum += p[i];
 
 }
 
