@@ -23,7 +23,7 @@ void fillSquares(int n, int* arr)
 {
     int i;
     for(i = 0; i < n; i++)
-        arr[i] = i*i;
+        arr[i] = (i+1)*(i+1);
 }
 
 /* Reads an integer n from arguments,
