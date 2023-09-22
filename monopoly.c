@@ -30,7 +30,7 @@ typedef struct Property
 int transaction(TPlayer *p1, TPlayer *p2, int amount)
 {
 
-
+	return 0;
 }
 
 //TODO
@@ -95,6 +95,7 @@ int main(int argc, char *argv[])
 	}
 	int m = atoi(argv[1]);
 	int n = atoi(argv[2]);
+	int rounds = atoi(argv[3]);
 	assert(n >= 13);
 	assert(m >= 1);
 	assert(rounds >= 1);
