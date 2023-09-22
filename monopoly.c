@@ -99,8 +99,6 @@ int main(int argc, char *argv[])
 	assert(n >= 13);
 	assert(m >= 1);
 	assert(rounds >= 1);
-
-	int rounds = atoi(argv[3]);
 	
 	TPlayer p[m];
 	TProperty prop[n];
