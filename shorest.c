@@ -52,7 +52,22 @@ t_pair *shortest_dist_pair(int n, t_point points[])
 	p_pair -> p2 = points[1];
 	// TODO fill in the code
 
+    for ( int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            if (j == i)
+                continue;
+                
+            double dist = squared_dist(&(points[i]), &(points[j]));
+            if(dist < min_d)
+            {
+	            p_pair -> p1 = points[i];
+	            p_pair -> p2 = points[j];
+            }
+        }
 
+    }
 
 
 
