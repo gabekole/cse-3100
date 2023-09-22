@@ -10,10 +10,11 @@
 /* Computes the sum of the first n elements in the array. */
 int sum(int n, int* arr)
 {
-    int i, sum;
+    int i;
+    int total = 0;
     for(i = 0; i < n; i++)
-        sum += arr[i];
-    return sum;
+        total += arr[i];
+    return total;
 }
 
 /* Fills the given array with the values
