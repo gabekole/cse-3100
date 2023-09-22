@@ -1,7 +1,7 @@
 # define more variables so it is easier to make changes
 # again, study the new varabiles and rules
 CC=gcc
-CFLAGS=-g -Wall -std=c99
+CFLAGS=-g -Wall -std=c99 -ggdb3
 TARGETS=argvcat squares
 
 all: $(TARGETS)
