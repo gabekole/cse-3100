@@ -45,8 +45,32 @@ int one_round(int m, int n, TPlayer p[], TProperty prop[])
 		int steps = rand() % 6 + 1 + rand() % 6 + 1;
 		//fill in the code below
 
+		TPlayer *player = &p[i];
 
+		player->loc += steps;
 
+		if(player->loc >= n) // Player position is greater than loop length
+			player->balance += n;
+
+		player->loc %= n; // Because the properties loop
+
+		TProperty * landedOn = &prop[player->loc];
+		
+		if(landedOn->owner_id == -1) // If property is unowned
+		{
+			landedOn->owner_id = player->id;
+		}
+		else if(landedOn->owner_id != player->id) // Property is owned by someone else
+		{
+			if (player->balance < landedOn->rent)
+			{
+				p[landedOn->owner_id].balance += player->balance;
+				player->balance = 0;
+				return 0;
+			}
+			p[landedOn->owner_id].balance += landedOn->rent;
+			player->balance -= landedOn->rent;
+		}
 
 
 
