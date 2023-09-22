@@ -15,21 +15,39 @@ void my_error(char *s)
  */
 char *my_strcat(char *s1, char *s2)
 {
-    // TODO 
-    return NULL;
+    unsigned int s1Length = strlen(s1);
+    unsigned int s2Length = strlen(s2);
+    unsigned int length =  s1Length + s2Length + 1; // + 1 for null byte
+
+    char * s3 = calloc(length, sizeof(char));
+
+    for(int i = 0; i < s1Length; i++)
+    {
+        s3[i] = s1[i];
+    }
+    for(int j = 0; j < s2Length; j++)
+    {
+        s3[j + s1Length] = s2[j];
+    }
+    s3[length - 1] = '\0'; // Set null byte
+
+    return s3;
 }
 
 int main(int argc, char *argv[])
 {
-    char    *s;
+    char *s;
 
     s = my_strcat("", argv[0]);
 
     for (int i = 1; i < argc; i ++) {
-        s = my_strcat(s, argv[i]);
+        char * temp = my_strcat(s, argv[i]);
+        free(s); // Not sure how bad this is as a practice
+        s = temp;
     }
 
     printf("%s\n", s);
 
+    free(s);
     return 0;
 }
