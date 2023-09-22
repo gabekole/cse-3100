@@ -64,6 +64,7 @@ t_pair *shortest_dist_pair(int n, t_point points[])
             {
 	            p_pair -> p1 = points[i];
 	            p_pair -> p2 = points[j];
+                min_d = dist;
             }
         }
 
