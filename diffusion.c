@@ -13,9 +13,29 @@
 void one_particle(int *grid, int n)
 {
 
+	int x = n;
+	int y = n;
+	int z = n;
 
+	for(int i = 0; i < n; i++)
+	{
+		int direction = rand() % 6;
+		if (direction == 0)
+			x--;
+		else if(direction == 1)
+			x++;
+		else if(direction == 2)
+			y++;
+		else if(direction == 3)
+			y--;
+		else if(direction == 4)
+			z--;
+		else if(direction == 5)
+			z++;
+	}
+	int length = 2*n + 1;
 
-
+	grid[z*length*length + y*length + x] += 1;
 }
 
 //TODO
@@ -26,10 +46,27 @@ void one_particle(int *grid, int n)
 //Note: you will not have access to math.h when submitting on Mimir
 double density(int *grid, int n, double r)
 {
+	int length = 2*n + 1;
+	double max_dist_sqared = (r*n)*(r*n);
 
+	int total_count = 0;
+	int inside_count = 0;
+	for(int z = 0; z < 2*n + 1; z++)
+	{
+		for(int y = 0; y < 2*n + 1; y++)
+		{
+			for(int x = 0; x < 2*n + 1; x++)
+			{
+				int value = grid[x + length*y + length*length*z];
+				total_count += value;
+				double dist_sqared = (z + n)*(z+n) + (y+n)*(y+n)+(x+n)*(x+n);
+				if ( dist_sqared < max_dist_sqared )
+					inside_count += value;
+			}
+		}	
+	}
 
-
-    
+	return ((double) inside_count) / ((double) total_count);
 }
 
 //use this function to print results
@@ -48,13 +85,14 @@ void print_result(int *grid, int n)
 void diffusion(int n, int m)
 {
 	//fill in a few line of code below
+	int * grid = calloc((2*n+1)*(2*n+1)*(2*n+1), sizeof(int));
 
 	for(int i = 1; i<=m; i++) one_particle(grid, n);
 
 	print_result(grid, n);
 	//fill in some code below
 
-
+	free(grid);
 }
 
 int main(int argc, char *argv[])
