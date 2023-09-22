@@ -47,26 +47,26 @@ void one_particle(int *grid, int n)
 double density(int *grid, int n, double r)
 {
 	int length = 2*n + 1;
-	double max_dist_sqared = (r*n)*(r*n);
+	double max_dist_sqared = (r*((double)n)*(r*((double) n)));
 
-	int total_count = 0;
-	int inside_count = 0;
+	double total_count = 0;
+	double inside_count = 0;
 	for(int z = 0; z < 2*n + 1; z++)
 	{
 		for(int y = 0; y < 2*n + 1; y++)
 		{
 			for(int x = 0; x < 2*n + 1; x++)
 			{
-				int value = grid[x + length*y + length*length*z];
+				double value = grid[x + length*y + length*length*z];
 				total_count += value;
-				double dist_sqared = (z + n)*(z+n) + (y+n)*(y+n)+(x+n)*(x+n);
-				if ( dist_sqared < max_dist_sqared )
+				double dist_sqared = (z - n)*(z - n) + (y - n)*(y - n)+(x - n)*(x - n);
+				if ( dist_sqared <= max_dist_sqared )
 					inside_count += value;
 			}
 		}	
 	}
 
-	return ((double) inside_count) / ((double) total_count);
+	return inside_count / total_count;
 }
 
 //use this function to print results
