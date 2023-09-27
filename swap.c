@@ -56,7 +56,7 @@ void test_swap_pointer_int(int argc, char *argv[])
 
     // TODO 
     // one line to call swap_point_int() to swap pa and pb
-    swap_point_int(pa, pb);
+    swap_pointer_int(pa, pb);
 
     printf("After swap\n");
     // printf(" pa is %p,  pb is %p\n",  pa,  pb);
