@@ -56,6 +56,7 @@ void test_swap_pointer_int(int argc, char *argv[])
 
     // TODO 
     // one line to call swap_point_int() to swap pa and pb
+    swap_point_int(pa, pb);
 
     printf("After swap\n");
     // printf(" pa is %p,  pb is %p\n",  pa,  pb);
@@ -67,6 +68,13 @@ void test_swap_pointer_int(int argc, char *argv[])
 // add two paramters of correct types 
 // the function does not return a value
 // void    swap_person();
+
+void swap_person(person_t * p1, person_t * p2)
+{
+    person_t temp = *p2;
+    *p2 = *p1;
+    *p1 = temp;  
+}
 
 void test_swap_person(int argc, char *argv[])
 {
@@ -89,7 +97,8 @@ void test_swap_person(int argc, char *argv[])
 
     // TODO 
     // one line to call swap_person() to swap x and y
-    
+    swap_person(&x, &y);
+
     printf("After swap\n");
     printf("x's id is %d, x's name is %s\n", x.id, x.name);
     printf("y's id is %d, y's name is %s\n", y.id, y.name);
