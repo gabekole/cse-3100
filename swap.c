@@ -30,6 +30,13 @@ typedef struct node_tag
 // the function does not return a value
 // void    swap_pointer_int();
 
+void swap_pointer_int(int *p1, int *p2)
+{
+    int temp = *p2;
+    *p2 = *p1;
+    *p1 = temp;
+}
+
 void test_swap_pointer_int(int argc, char *argv[])
 {
     int     a = 10, b = 20;
