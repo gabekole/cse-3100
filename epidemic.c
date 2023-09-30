@@ -4,12 +4,12 @@
 
 enum TYPE {S, I, R};
 
-//TODO: Implement idx
 //idx returns an integer to be used for hashing
 //this integer should be unique for every x, y pair in your grid
 int idx(int x, int y, int k)
 {
-
+	// Side length is 2*k + 1 since distance from center to edge is k
+	return y*(2*k+1) + x;
 }
 
 typedef struct Host
@@ -28,9 +28,10 @@ typedef struct node_tag {
 
 //create a node whose value is a specific host
 //return a pointer to the created node
-node * create_node(THost host) 
+node create_node(THost host) // Switched to use stack instead of heap 
 {
-
+	node temp = {host, NULL};
+	return temp;
 }
 
 //add_first() should add to the beginning of a linked list
@@ -38,7 +39,16 @@ node * create_node(THost host)
 //note that it does not return a value 
 void add_first(node **head, node *newnode)
 {
-
+	if(head == NULL)// There is an error (list not initialized properly)
+	{
+		return;
+	}
+	else
+	{
+		node *temp = *head;
+		*head = newnode;
+		(*head)->next = temp;
+	}
 }
 
 
@@ -47,14 +57,19 @@ void add_first(node **head, node *newnode)
 //return a pointer to the removed content
 node * remove_first(node **head) 
 {
+	node * first = *head;
 
+	*head = (*head)->next;
+
+	return first;
 }
 
 //remove all the nodes in the list
-//and free all the allocated memory
+//and free all the allocated memory 
+// ^ Don't have to cuz i used stack :)
 void remove_all(node **head)
 {
-
+	*head = NULL;
 }
 
 //location_match checks whether a linked list contains
@@ -62,7 +77,16 @@ void remove_all(node **head)
 //return 1 if there is a match, 0 if not
 int location_match(node *head, THost host)
 {
+	
+	node *current = head;
+	while(current != NULL)
+	{
+		THost currentHost = current->host;
 
+		if (currentHost.x == host.x && currentHost.y == host.y)
+			return 1;
+	}
+	return 0;
 }
 
 
