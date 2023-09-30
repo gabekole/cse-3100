@@ -106,7 +106,37 @@ void print_list_details(node *head) {
 // functions that have not been implemented
 
 node *delete_node(node *head, int v) {
-  // TODO
+  
+  
+  if(head == NULL)
+    error_message(ERR_NODELETE);
+
+  if(head->v == v)
+  {
+    head = head->next;
+    return head; 
+  }
+
+  node *prev = head;
+  node *current = head->next;
+  node *next = NULL;
+
+  while(current != NULL)
+  {
+    next = current->next;
+
+
+    if(current->v == v)
+    {
+      prev->next = next;  // Skip over current so it is no longer referenced
+      return head;
+    }
+
+
+    prev = current;
+    current = next;
+  }
+
   error_message(ERR_NODELETE);
   return head;
 }
@@ -120,7 +150,21 @@ node *delete_node(node *head, int v) {
  */
 node *reverse_list(node *head) {
   // TODO
-  error_message(ERR_NOREVERSE);
-  return head;
 
+  if(head == NULL || head->next == NULL)
+    return head;
+
+  node *prev = head;
+  node *current = head->next;
+  head->next = NULL; // Current head should point to nothing since it is now the end of the list
+
+  while(current != NULL)
+  {
+    node *next = current->next;
+    current->next = prev;
+    prev = current;
+    current = next;
+  }
+
+  return prev;
 }
