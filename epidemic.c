@@ -135,17 +135,20 @@ int one_round(THost *hosts, int m, node *p_arr[], int n_arr, int k, int T)
             if(location_match(p_arr[index], hosts[i]))
             {
             	//TODO: fill in what should happen here (not long)
+				hosts[i].type = I;
 			}
         }
 		else if(hosts[i].type == I)
         {
-           	//TODO: fill in what should happen here (not long)
+			hosts[i].t += 1;
+			if(hosts[i].t == T)
+				hosts[i].type = R; 
         }
     }
 
 	//TODO: fill in code below
     //reset all linked lists
-
+	
 
 
 	for(int i = 0; i < m; i++)
