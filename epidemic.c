@@ -28,9 +28,11 @@ typedef struct node_tag {
 
 //create a node whose value is a specific host
 //return a pointer to the created node
-node create_node(THost host) // Switched to use stack instead of heap 
+node *create_node(THost host) // Switched to use stack instead of heap 
 {
-	node temp = {host, NULL};
+	node *temp = malloc(sizeof(node));
+	temp->host = host;
+	temp->next = NULL; 
 	return temp;
 }
 
@@ -55,6 +57,7 @@ void add_first(node **head, node *newnode)
 //remove the first node from the list
 //note the type: 'node **head'
 //return a pointer to the removed content
+// MUST BE FREED
 node * remove_first(node **head) 
 {
 	node * first = *head;
@@ -64,12 +67,21 @@ node * remove_first(node **head)
 	return first;
 }
 
+?? HERE <
 //remove all the nodes in the list
-//and free all the allocated memory 
-// ^ Don't have to cuz i used stack :)
+//and free all the allocated memory
+void remove_recursive(node *head)
+{
+	if(head == NULL)
+		return;
+
+	remove_recursive(head->next);
+	free(head);
+}
+
 void remove_all(node **head)
 {
-	*head = NULL;
+	remove_recursive(*head);
 }
 
 //location_match checks whether a linked list contains
@@ -136,6 +148,7 @@ int one_round(THost *hosts, int m, node *p_arr[], int n_arr, int k, int T)
             {
             	//TODO: fill in what should happen here (not long)
 				hosts[i].type = I;
+				hosts[i].t = 0;
 			}
         }
 		else if(hosts[i].type == I)
@@ -148,21 +161,20 @@ int one_round(THost *hosts, int m, node *p_arr[], int n_arr, int k, int T)
 
 	//TODO: fill in code below
     //reset all linked lists
-	
-
-
 	for(int i = 0; i < m; i++)
 	{
 		int r = rand() % 4;
 		//finish the follow code
 		//0: up, 1: right, 2: down, 3: left
 		//TODO: update locations for all hosts
+		int y = hosts[i].y;
+		int x = hosts[i].x;
 		switch(r)
 		{
-			case 0: hosts[i].y = 
-			case 1: hosts[i].x =
-			case 2: hosts[i].y =
-			case 3: hosts[i].x =
+			case 0: hosts[i].y = (y+1) % (2*k + 1); break;
+			case 1: hosts[i].x = (x+1) % (2*k + 1); break;
+			case 2: hosts[i].y = (y-1) % (2*k + 1); break;
+			case 3: hosts[i].x = (x-1) % (2*k + 1); break;
 		}
 
 		//buid linked list for I hosts
