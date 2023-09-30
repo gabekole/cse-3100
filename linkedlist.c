@@ -109,7 +109,7 @@ node *delete_node(node *head, int v) {
   
   
   if(head == NULL)
-    error_message(ERR_NODELETE);
+    error_message(ERR_NOTFOUND);
 
   if(head->v == v)
   {
@@ -137,7 +137,7 @@ node *delete_node(node *head, int v) {
     current = next;
   }
 
-  error_message(ERR_NODELETE);
+  error_message(ERR_NOTFOUND);
   return head;
 }
 
@@ -149,7 +149,6 @@ node *delete_node(node *head, int v) {
  * Return value is a pointer to the new head node.
  */
 node *reverse_list(node *head) {
-  // TODO
 
   if(head == NULL || head->next == NULL)
     return head;
