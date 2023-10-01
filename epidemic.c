@@ -57,7 +57,7 @@ void add_first(node **head, node *newnode)
 //remove the first node from the list
 //note the type: 'node **head'
 //return a pointer to the removed content
-// MUST BE FREED
+// MUST BE FREED BY USER
 node * remove_first(node **head) 
 {
 	node * first = *head;
@@ -67,7 +67,6 @@ node * remove_first(node **head)
 	return first;
 }
 
-?? HERE <
 //remove all the nodes in the list
 //and free all the allocated memory
 void remove_recursive(node *head)
@@ -81,7 +80,8 @@ void remove_recursive(node *head)
 
 void remove_all(node **head)
 {
-	remove_recursive(*head);
+	// remove_recursive(*head);
+	*head = NULL;
 }
 
 //location_match checks whether a linked list contains
@@ -137,47 +137,56 @@ int summary(THost hosts[], int m)
 // one_round 
 int one_round(THost *hosts, int m, node *p_arr[], int n_arr, int k, int T)
 {
-    //S -> I and I -> R
-    for(int i = 0; i < m; i++)
-    {
-        if(hosts[i].type == S) //Note the use of enumerator S
-        {
-			//finish the following line of code
-            int index = hash(idx(hosts[i].x, hosts[i].y, k)) % n_arr;
-            if(location_match(p_arr[index], hosts[i]))
-            {
-            	//TODO: fill in what should happen here (not long)
-				hosts[i].type = I;
-				hosts[i].t = 0;
-			}
-        }
-		else if(hosts[i].type == I)
-        {
-			hosts[i].t += 1;
-			if(hosts[i].t == T)
-				hosts[i].type = R; 
-        }
-    }
-
-	//TODO: fill in code below
-    //reset all linked lists
+	// Colision and time update
 	for(int i = 0; i < m; i++)
 	{
-		int r = rand() % 4;
-		//finish the follow code
-		//0: up, 1: right, 2: down, 3: left
-		//TODO: update locations for all hosts
-		int y = hosts[i].y;
-		int x = hosts[i].x;
-		switch(r)
+		if(hosts[i].type == I)
 		{
-			case 0: hosts[i].y = (y+1) % (2*k + 1); break;
-			case 1: hosts[i].x = (x+1) % (2*k + 1); break;
-			case 2: hosts[i].y = (y-1) % (2*k + 1); break;
-			case 3: hosts[i].x = (x-1) % (2*k + 1); break;
+			if(hosts[i].t == T)
+			{	
+				hosts[i].type = R;
+			}
+			hosts[i].t += 1;
 		}
+		else if(hosts[i].type == S)
+		{
+			unsigned int hash_index = hash(idx(hosts[i].x, hosts[i].y, k)) % n_arr;
 
-		//buid linked list for I hosts
+			node *hosts_in_location = p_arr[hash_index];
+
+			if(location_match(hosts_in_location, hosts[i]))
+			{
+				hosts[i].type = I;
+				hosts[i].t = 0;
+			} 
+		}
+	}
+	
+
+	// Update location
+	for(int i = 0; i < m; i++)
+	{
+		int dir = rand() % 4;
+
+		int x = hosts[i].x;
+		int y = hosts[i].y;
+		switch(dir)
+		{
+			case 0: hosts[i].y = ((y + k + 1) % (2*k+1)) - k; break;
+			case 1: hosts[i].x = ((x + k + 1) % (2*k+1)) - k; break;
+			case 2: hosts[i].y = ((y + k - 1) % (2*k+1)) - k; break;
+			case 3: hosts[i].x = ((x + k - 1) % (2*k+1)) - k; break;
+		}
+	}
+
+
+	// Update Hashmap
+	for(int i = 0; i < m; i++)
+	{
+		remove_all(&p_arr[i]);
+	}
+	for(int i = 0; i < m; i++)
+	{
 		if(hosts[i].type == I)
 		{
 			node *r = create_node(hosts[i]);
