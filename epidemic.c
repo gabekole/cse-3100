@@ -248,7 +248,9 @@ int main(int argc, char *argv[])
 	add_first(&(p_arr[index]), r);
 
 	//simulation
-	while(one_round(hosts, m, p_arr, N, k, T));
+	one_round(hosts, m, p_arr, N, k, T);
+	// fails with 2 2 2 4
+	one_round(hosts, m, p_arr, N, k, T);
 
 	return 0;
 }
