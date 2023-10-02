@@ -147,10 +147,10 @@ int one_round(THost *hosts, int m, node *p_arr[], int n_arr, int k, int T)
 		else if(hosts[i].type == I)
         {
            	//TODO: fill in what should happen here (not long)
-			hosts[i].t += 1;
 			if(hosts[i].t == T){ // ORDER <- TODO CHECK
 				hosts[i].type = R;
 			}
+			hosts[i].t += 1;
         }
     }
 
