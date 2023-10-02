@@ -90,7 +90,7 @@ void remove_multiple(node **head, int k)
 //Remove all the nodes from the list and free the corresponding memory
 void free_all(node **head)
 {
-   if(head == NULL || *head = NULL)
+   if(head == NULL || *head == NULL)
    {
      return;
    }
