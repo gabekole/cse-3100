@@ -61,30 +61,7 @@ node * remove_first(node **head)
 //their allocated memory
 void remove_multiple(node **head, int k)
 {
-   
-   if(head == NULL)
-     return;
-
-
-
-  while((*head) != NULL && (*head)->v != k && (*head)->v % k == 0){
-    *head = (*head)->next;
-  }
-
-  if(*head == NULL)
-    return;
-  
-  node *previous= *head;
-  node *current = previous->next;
-
-  while(current != NULL)
-    {
-      if(current->v % k == 0 && current->v != k){
-        previous->next = current->next;
-        free(current);
-      }
-      current = current->next;
-    }
+ while(remove_first(head) != NULL){}
 }
 
 //Remove all the nodes from the list and free the corresponding memory
