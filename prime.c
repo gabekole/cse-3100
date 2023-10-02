@@ -62,13 +62,13 @@ node * remove_first(node **head)
 void remove_multiple(node **head, int k)
 {
    
-   if(head = NULL)
+   if(head == NULL)
      return;
 
 
 
   while((*head) != NULL && (*head)->v != k && (*head)->v % k == 0){
-    *head = (*head)->next
+    *head = (*head)->next;
   }
 
   if(*head == NULL)
