@@ -10,7 +10,7 @@ int next_index(int a[], int k, int n)
 
    int next = (k+steps)%n;
 
-   a[n] -= 1;
+   a[k] -= 1;
 
    return next;
 }
