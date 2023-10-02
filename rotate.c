@@ -6,9 +6,9 @@
 //Return the next index and update a[]
 int next_index(int a[], int k, int n)
 {
-   int steps = a[k]
+   int steps = a[k];
 
-   int next = (k+steps)%n
+   int next = (k+steps)%n;
 
    a[n] -= 1;
 
