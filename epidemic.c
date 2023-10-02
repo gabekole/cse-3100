@@ -173,10 +173,10 @@ int one_round(THost *hosts, int m, node *p_arr[], int n_arr, int k, int T)
 		
 		switch(r)
 		{
-			case 0: hosts[i].y = ((y + 1 + k) % (2*k+1)) - k;
-			case 1: hosts[i].x = ((x + 1 + k) % (2*k+1)) - k;
-			case 2: hosts[i].y = ((y - 1 + k) % (2*k+1)) - k;
-			case 3: hosts[i].x = ((x - 1 + k) % (2*k+1)) - k;
+			case 0: hosts[i].y = ((y + 1 + k) % (2*k+1)) - k; break;
+			case 1: hosts[i].x = ((x + 1 + k) % (2*k+1)) - k; break;
+			case 2: hosts[i].y = ((y - 1 + k) % (2*k+1)) - k; break;
+			case 3: hosts[i].x = ((x - 1 + k) % (2*k+1)) - k; break;
 		}
 
 		//buid linked list for I hosts
