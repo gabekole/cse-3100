@@ -67,20 +67,8 @@ node * remove_first(node **head)
 	return first;
 }
 
-//remove all the nodes in the list
-//and free all the allocated memory
-void remove_recursive(node *head)
-{
-	if(head == NULL)
-		return;
-
-	remove_recursive(head->next);
-	free(head);
-}
-
 void remove_all(node **head)
 {
-	// remove_recursive(*head);
 	*head = NULL;
 }
 
@@ -97,6 +85,8 @@ int location_match(node *head, THost host)
 
 		if (currentHost.x == host.x && currentHost.y == host.y)
 			return 1;
+
+		current = current->next;
 	}
 	return 0;
 }
@@ -134,6 +124,7 @@ int summary(THost hosts[], int m)
 	return I_n > 0;
 }
 
+
 // one_round 
 int one_round(THost *hosts, int m, node *p_arr[], int n_arr, int k, int T)
 {
@@ -150,11 +141,20 @@ int one_round(THost *hosts, int m, node *p_arr[], int n_arr, int k, int T)
 		}
 		else if(hosts[i].type == S)
 		{
+			// for(int j = 0; j < m; j++)
+			// {
+			// 	if(j == i)
+			// 		continue;
+			// 	if(hosts[j].type == I && hosts[i].x == hosts[j].x && hosts[i].y == hosts[j].y)
+			// 	{
+			// 		hosts[i].type = I;
+			// 		hosts[i].t = 0;
+			// 	}
+			// }
+
+
 			unsigned int hash_index = hash(idx(hosts[i].x, hosts[i].y, k)) % n_arr;
-
-			node *hosts_in_location = p_arr[hash_index];
-
-			if(location_match(hosts_in_location, hosts[i]))
+			if(location_match(p_arr[hash_index], hosts[i]))
 			{
 				hosts[i].type = I;
 				hosts[i].t = 0;
@@ -230,8 +230,8 @@ int main(int argc, char *argv[])
 	for(int i = 1; i < m; i ++)
 	{
 		hosts[i].id = i;
-		hosts[i].x = rand() % (2*k + 1) - k;
-		hosts[i].y = rand() % (2*k + 1) - k;
+		hosts[i].x = (rand() % (2*k + 1)) - k;
+		hosts[i].y = (rand() % (2*k + 1)) - k;
 		hosts[i].t = 0;
 		hosts[i].type = S;		
 	}
@@ -243,14 +243,13 @@ int main(int argc, char *argv[])
 	{
 		p_arr[i] = NULL;
 	}
-	node *r = create_node(hosts[0]);
-	int index = hash(idx(hosts[0].x, hosts[0].y, k)) % N;
-	add_first(&(p_arr[index]), r);
+	node *r1 = create_node(hosts[0]);
+	int index1 = hash(idx(hosts[0].x, hosts[0].y, k)) % N;
+	add_first(&(p_arr[index1]), r1);
+
 
 	//simulation
-	one_round(hosts, m, p_arr, N, k, T);
-	// fails with 2 2 2 4
-	one_round(hosts, m, p_arr, N, k, T);
+	while(one_round(hosts, m, p_arr, N, k, T)) {}
 
 	return 0;
 }
