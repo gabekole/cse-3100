@@ -79,11 +79,19 @@ void remove_all(node **head)
 }
 
 //location_match checks whether a linked list contains
-//one or more hosts in the same location as 'host'
+//one or more hosts in the same location as 'host' THAT IS INFECTED 
 //return 1 if there is a match, 0 if not
 int location_match(node *head, THost host)
 {
+	node *current = head;
 
+	while(current != NULL)
+	{
+		if(current->host.x == host.x && current->host.y == host.y && current->host.type == I)
+			return 1;
+		current = current->next;
+	}
+	return 0;
 }
 
 
@@ -132,17 +140,26 @@ int one_round(THost *hosts, int m, node *p_arr[], int n_arr, int k, int T)
             if(location_match(p_arr[index], hosts[i]))
             {
             	//TODO: fill in what should happen here (not long)
+				hosts[i].type = I;
+				hosts[i].t = 0;
 			}
         }
 		else if(hosts[i].type == I)
         {
            	//TODO: fill in what should happen here (not long)
+			if(hosts[i].t == T){ // ORDER <- TODO CHECK
+				hosts[i].type = R;
+			}
+			hosts[i].t += 1;
         }
     }
 
 	//TODO: fill in code below
     //reset all linked lists
-
+	for(int i = 0; i < n_arr; i++)
+	{
+		remove_all(&(p_arr[i]));
+	}
 
 
 	for(int i = 0; i < m; i++)
@@ -151,12 +168,15 @@ int one_round(THost *hosts, int m, node *p_arr[], int n_arr, int k, int T)
 		//finish the follow code
 		//0: up, 1: right, 2: down, 3: left
 		//TODO: update locations for all hosts
+		int y = hosts[i].x;
+		int x = hosts[i].y;
+		
 		switch(r)
 		{
-			case 0: hosts[i].y = 0;
-			case 1: hosts[i].x =0;
-			case 2: hosts[i].y =0;
-			case 3: hosts[i].x =0;
+			case 0: hosts[i].y = (y + k + 1) % (2*k+1) - k;
+			case 1: hosts[i].x = (x + k + 1) % (2*k+1) - k;
+			case 2: hosts[i].y = (y + k - 1) % (2*k+1) - k;
+			case 3: hosts[i].x = (x + k - 1) % (2*k+1) - k;
 		}
 
 		//buid linked list for I hosts
@@ -216,39 +236,12 @@ int main(int argc, char *argv[])
 	{
 		p_arr[i] = NULL;
 	}
-	// node *r = create_node(hosts[0]);
-	// int index = hash(idx(hosts[0].x, hosts[0].y, k)) % N;
-	// add_first(&(p_arr[index]), r);
-
-	// //simulation
-	// while(one_round(hosts, m, p_arr, N, k, T));
-
-	hosts[0].x = 0;
-	hosts[0].y = 0;
-	hosts[0].t = 1;
-	hosts[1].x = 0;
-	hosts[1].y = 0;
-	hosts[1].t = 2;
-	hosts[2].x = 0;
-	hosts[2].y = 0;
-	hosts[2].t = 3;
-
 	node *r = create_node(hosts[0]);
 	int index = hash(idx(hosts[0].x, hosts[0].y, k)) % N;
 	add_first(&(p_arr[index]), r);
 
-	r = create_node(hosts[1]);
-	index = hash(idx(hosts[1].x, hosts[1].y, k)) % N;
-	add_first(&(p_arr[index]), r);
-
-	node *removed = remove_first(&(p_arr[index]));
-	free(removed);
-
-	r = create_node(hosts[0]);
-	index = hash(idx(hosts[0].x, hosts[0].y, k)) % N;
-	add_first(&(p_arr[index]), r);
-
-	remove_all(&(p_arr[index]));
+	//simulation
+	while(one_round(hosts, m, p_arr, N, k, T));
 
 
 
