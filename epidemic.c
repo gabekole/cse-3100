@@ -147,7 +147,7 @@ int one_round(THost *hosts, int m, node *p_arr[], int n_arr, int k, int T)
 		else if(hosts[i].type == I)
         {
            	//TODO: fill in what should happen here (not long)
-			if(hosts[i].t == T){ // ORDER <- TODO CHECK
+			if(hosts[i].t >= T){ // ORDER <- TODO CHECK
 				hosts[i].type = R;
 			}
 			hosts[i].t += 1;
@@ -168,16 +168,35 @@ int one_round(THost *hosts, int m, node *p_arr[], int n_arr, int k, int T)
 		//finish the follow code
 		//0: up, 1: right, 2: down, 3: left
 		//TODO: update locations for all hosts
-		int y = hosts[i].x;
-		int x = hosts[i].y;
+		int y = hosts[i].y;
+		int x = hosts[i].x;
 		
 		switch(r)
 		{
-			case 0: hosts[i].y = ((y + 1 + k) % (2*k+1)) - k; break;
-			case 1: hosts[i].x = ((x + 1 + k) % (2*k+1)) - k; break;
-			case 2: hosts[i].y = ((y - 1 + k) % (2*k+1)) - k; break;
-			case 3: hosts[i].x = ((x - 1 + k) % (2*k+1)) - k; break;
+			case 0: hosts[i].y = y + 1; break;
+			case 1: hosts[i].x = x + 1; break;
+			case 2: hosts[i].y = y - 1; break;
+			case 3: hosts[i].x = x - 1; break;
 		}
+
+		if(hosts[i].x > k)
+		{
+			hosts[i].x = hosts[i].x - 2*k - 1;
+		}
+		if(hosts[i].y > k)
+		{
+			hosts[i].y = hosts[i].y - 2*k - 1;
+		}
+		if(hosts[i].x < -k)
+		{
+			hosts[i].x = hosts[i].x + 2*k + 1;
+		}
+		if(hosts[i].y < -k)
+		{
+			hosts[i].y = hosts[i].y + 2*k + 1;
+		}
+
+		// printf("start: %d, %d; dir: %d; end: %d, %d\n", x, y, r, hosts[i].x, hosts[i].y);
 
 		//buid linked list for I hosts
 		if(hosts[i].type == I)
