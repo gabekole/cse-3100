@@ -66,7 +66,14 @@ int nodeIsMultiple(node *n, int k)
 //their allocated memory
 void remove_multiple(node **head, int k)
 {
-    
+    node * temp = *head;
+
+    while(temp != NULL){
+        printf("%d ", temp->v);
+        temp = temp->next;
+    }
+    printf("\nRemove Multiples of %d\n", k);
+
     while(nodeIsMultiple(*head, k)){
         remove_first(head);
     }
