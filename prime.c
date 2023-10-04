@@ -72,7 +72,7 @@ void remove_multiple(node **head, int k)
         printf("%d ", temp->v);
         temp = temp->next;
     }
-    printf("\nRemove Multiples of %d\n", k);
+    printf("\nRemove multiples of %d\n", k);
 
     while(nodeIsMultiple(*head, k)){
         remove_first(head);
