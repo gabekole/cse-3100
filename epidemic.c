@@ -141,7 +141,7 @@ int one_round(THost *hosts, int m, node *p_arr[], int n_arr, int k, int T)
             {
             	//TODO: fill in what should happen here (not long)
 				hosts[i].type = I;
-				hosts[i].t = 0;
+				hosts[i].t = 1;
 			}
         }
 		else if(hosts[i].type == I)
@@ -170,6 +170,8 @@ int one_round(THost *hosts, int m, node *p_arr[], int n_arr, int k, int T)
 		//TODO: update locations for all hosts
 		int y = hosts[i].y;
 		int x = hosts[i].x;
+
+		// printf("start: %d, %d; dir: %d; ", x, y, r);
 		
 		switch(r)
 		{
@@ -196,7 +198,8 @@ int one_round(THost *hosts, int m, node *p_arr[], int n_arr, int k, int T)
 			hosts[i].y = hosts[i].y + 2*k + 1;
 		}
 
-		// printf("start: %d, %d; dir: %d; end: %d, %d\n", x, y, r, hosts[i].x, hosts[i].y);
+		
+		// printf("end: %d, %d;\n", hosts[i].x, hosts[i].y);
 
 		//buid linked list for I hosts
 		if(hosts[i].type == I)
