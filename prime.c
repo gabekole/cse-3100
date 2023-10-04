@@ -12,7 +12,7 @@ typedef struct node_tag
 
 node * create_node(int v)
 {
-    node    * p = malloc(sizeof(node)); // Allocate memory
+    node * p = malloc(sizeof(node)); // Allocate memory
     assert(p != NULL);      // you can be nicer
 
     // Set the value in the node.
@@ -57,11 +57,56 @@ node * remove_first(node **head)
 	return p;
 }
 
+int nodeIsMultiple(node *n, int k)
+{
+    return (n != NULL) && (n->v % k == 0) && (n->v != k);
+}
+
 //Remove all the nodes whose value is a multiple of k but not k itself from the list, and free
 //their allocated memory
 void remove_multiple(node **head, int k)
 {
- while(remove_first(head) != NULL){}
+    
+    while(nodeIsMultiple(*head, k)){
+        remove_first(head);
+    }
+
+    if(*head == NULL)
+        return;
+    
+    node *previous = *head;
+    node *current = previous->next;
+
+
+
+    while(current != NULL)
+    {
+        node *temp = *head;
+        while(temp != NULL){
+            printf("%d, ", temp->v);
+            temp = temp->next;
+        }
+        printf("\n");
+
+        if(nodeIsMultiple(current, k))
+        {
+            printf("Removing: %d because it is multiple of %d: ", current->v, k);
+            previous->next = current->next;
+            free(current);
+            current = previous->next;
+        }
+        else
+        {
+            current = current->next;
+        }
+
+        temp = *head;
+        while(temp != NULL){
+            printf("%d, ", temp->v);
+            temp = temp->next;
+        }
+        printf("\n");
+    }
 }
 
 //Remove all the nodes from the list and free the corresponding memory
