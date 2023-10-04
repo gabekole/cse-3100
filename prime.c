@@ -81,31 +81,17 @@ void remove_multiple(node **head, int k)
 
     while(current != NULL)
     {
-        node *temp = *head;
-        while(temp != NULL){
-            printf("%d, ", temp->v);
-            temp = temp->next;
-        }
-        printf("\n");
-
         if(nodeIsMultiple(current, k))
         {
-            printf("Removing: %d because it is multiple of %d: ", current->v, k);
             previous->next = current->next;
             free(current);
             current = previous->next;
         }
         else
         {
+            previous = current;
             current = current->next;
         }
-
-        temp = *head;
-        while(temp != NULL){
-            printf("%d, ", temp->v);
-            temp = temp->next;
-        }
-        printf("\n");
     }
 }
 
