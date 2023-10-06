@@ -39,6 +39,14 @@ int main(int argc, char *argv[])
     int counts[26];
     letter_counts(a, n, counts);
     //TODO
+
+    for(int i = 0; i < 26; i++)
+    {
+        if(counts[i] > 0)
+        {
+            printf("%c %d\n", i+97, counts[i]);
+        }
+    }
     
 
     return 0;
