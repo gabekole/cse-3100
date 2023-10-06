@@ -15,17 +15,33 @@ int match(char *exp)
         if(exp[i] == '(' || exp[i] == '[' || exp[i]=='{')
         {
             //TODO
-
+            node *n = create_node(exp[i]);
+            push(s, n);
         }
         else if(exp[i] == ')' || exp[i] == ']' || exp[i] == '}')
         {
-            //TODO
-
+            node *popped = pop(s);
+            char lastChar = popped->v;
+            
+            switch(lastChar){
+                case '(':
+                    if(exp[i] != ')')
+                        return 0;
+                    break;
+                case '[':
+                    if(exp[i] != ']')
+                        return 0;
+                    break;
+                case '{':
+                    if(exp[i] != '}')
+                        return 0;
+                    break;
+            }
         }
     }
     if(!empty(s)) 
     {
-        //TODO
+        return 0;
     }
     free(s);
     return result;
