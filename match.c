@@ -43,6 +43,7 @@ int match(char *exp)
     {
         return 0;
     }
+    clear_stack(s);
     free(s);
     return result;
 }

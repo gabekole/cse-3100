@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -g -std=c99
+CFLAGS=-Wall -ggdb -std=c99
 TARGETS=match counts
 
 all: $(TARGETS)
