@@ -37,6 +37,7 @@ int match(char *exp)
                         return 0;
                     break;
             }
+            free(popped);
         }
     }
     if(!empty(s)) 
