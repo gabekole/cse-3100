@@ -5,8 +5,16 @@
 //TODO
 void letter_counts(char a[], int n, int counts[26])
 {
+    for(int i = 0; i < 26; i++)
+        counts[i] = 0;
 
-
+    for(int i = 0; i < n; i++)
+    {
+        char c = a[i];
+        int index = c - 97;
+        // printf("%d\n", index);
+        counts[index] += 1;
+    }
 }
 
 int main(int argc, char *argv[])
@@ -31,7 +39,7 @@ int main(int argc, char *argv[])
     int counts[26];
     letter_counts(a, n, counts);
     //TODO
-
+    
 
     return 0;
 }
