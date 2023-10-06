@@ -46,7 +46,7 @@ int match(char *exp)
     }
     if(!empty(s)) 
     {
-        return 0;
+        result = 0;
     }
     
     clear_stack(s);
