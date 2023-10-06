@@ -20,30 +20,35 @@ int match(char *exp)
         }
         else if(exp[i] == ')' || exp[i] == ']' || exp[i] == '}')
         {
+            if(empty(s)){
+                result = 0;
+                break;
+            }
+
             node *popped = pop(s);
             char lastChar = popped->v;
-            
-            switch(lastChar){
-                case '(':
-                    if(exp[i] != ')')
-                        return 0;
-                    break;
-                case '[':
-                    if(exp[i] != ']')
-                        return 0;
-                    break;
-                case '{':
-                    if(exp[i] != '}')
-                        return 0;
-                    break;
-            }
             free(popped);
+            
+            if(lastChar == '(' && exp[i] != ')'){
+                result = 0;
+                break;
+            }
+            if(lastChar == '[' && exp[i] != ']'){
+                result = 0;
+                break;
+            }
+            if(lastChar == '{' && exp[i] != '}'){
+                result = 0;
+                break;
+            }
+
         }
     }
     if(!empty(s)) 
     {
         return 0;
     }
+    
     clear_stack(s);
     free(s);
     return result;

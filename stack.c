@@ -18,7 +18,7 @@ node* pop(stack *s)
 //TODO:
 int empty(stack *s)
 {
-    return s->top == NULL;
+    return (s->top) == NULL;
 }
 
 //TODO:
