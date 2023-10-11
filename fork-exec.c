@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
 
 		//TODO:
 		//fill in the code below 
-        char * argv_list[] = {"./sum" argv[1]};
+        char * argv_list[] = {"./sum", argv[1]};
 
 
         // the execv() only return if error occured. 
