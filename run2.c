@@ -37,7 +37,7 @@ int main(int argc, char ** argv)
     }
 
 
-    pid_t child_2 = fork();
+    child_2 = fork();
     if(child_2 < 0)
     {
         perror("Failed to create child process");
