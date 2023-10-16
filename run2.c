@@ -6,7 +6,7 @@
 
 int main(int argc, char ** argv)
 {
-    pid_t child;
+    pid_t child_1, child_2;
     int exitStatus;
 
     // at least, there should be 3 arguments
@@ -18,13 +18,13 @@ int main(int argc, char ** argv)
     }
 
 
-    child = fork();
-    if(child < 0)
+    child_1 = fork();
+    if(child_1 < 0)
     {
         perror("fork()");
         exit(1);
     }
-    else if(child == 0)
+    else if(child_1 == 0)
     {
         execlp(argv[1], argv[1], argv[2], NULL);
         perror("execlp");
@@ -32,7 +32,8 @@ int main(int argc, char ** argv)
     }
     else
     {
-        waitpid(child, NULL, 0);
+        waitpid(child_1, &exitStatus, 0);
+        printf("exited=%d exitstatus=%d\n", WIFEXITED(exitStatus), WEXITSTATUS(exitStatus));
     }
 
 
@@ -51,6 +52,7 @@ int main(int argc, char ** argv)
     else
     {
         waitpid(child_2, NULL, 0);
+        printf("exited=%d exitstatus=%d\n", WIFEXITED(exitStatus), WEXITSTATUS(exitStatus));
     }
 
 
