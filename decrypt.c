@@ -46,18 +46,10 @@ int in_dict(char *word)
 
     int length = MAX_WORD_COUNT;
     
-    int left = 0;
-    int right = length - 1;
-
-    while (left <= right) {
-        int m = left + (right - left) / 2;
-        int wordDiff = strncmp(word, words[m], MAX_WORD_LENGTH);
-        if (wordDiff == 0)
-            return 1; // FOUND IT
-        if (wordDiff > 0)
-            left = m + 1;
-        else
-            right = m - 1;
+    for(int i = 0; i < length -1; i++)
+    {
+        if(strncmp(word, words[i], MAX_WORD_LENGTH) == 0)
+            return 1;
     }
  
     return 0; // NOT FOUND
@@ -86,8 +78,12 @@ void decryption(unsigned char key, unsigned char shift, const int *encrypted, in
 //calculate a score for a message msg
 //the score is used to determine whether msg is the original message
 int message_score(const char *msg)
-{ 
-    char* token = strtok(msg, " ");
+{
+    char *str = malloc(MAX_WORD_LENGTH);
+
+    strncpy(str, msg, MAX_WORD_LENGTH);
+
+    char* token = strtok(str, " ");
     int score = 0;
 
     while (token != NULL) {
@@ -165,10 +161,12 @@ int main(int argc, char *argv[])
 	int encrypted[MAX];
 	int len = read_encrypted(argv[1], encrypted);
     
-	
 	char message[MAX];
 	strcpy(message, "");
+    
 	search(encrypted, len, message);
+
 	printf("%s\n", message);
+
 	return 0;
 }
