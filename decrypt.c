@@ -44,9 +44,23 @@ void read_file_to_array(char *filename)
 int in_dict(char *word)
 {
 
+    int length = MAX_WORD_COUNT;
+    
+    int left = 0;
+    int right = length - 1;
 
-
-
+    while (left <= right) {
+        int m = left + (right - left) / 2;
+        int wordDiff = strncmp(word, words[m], MAX_WORD_LENGTH);
+        if (wordDiff == 0)
+            return 1; // FOUND IT
+        if (wordDiff > 0)
+            left = m + 1;
+        else
+            right = m - 1;
+    }
+ 
+    return 0; // NOT FOUND
 }
 
 //TODO
