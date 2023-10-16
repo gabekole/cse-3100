@@ -128,12 +128,27 @@ void search(const int *encrypted, int len, char *message)
 //return number of bytes read
 int read_encrypted(char *filename, int *encrypted)
 {
+    int fd = open(filename, O_RDONLY);
+    if(fd < 0)
+    {
+        printf("Cannot open file %s.\n", filename);
+        exit(-1);
+    }
+    
+    char * ptr = (char *) encrypted;
+    int index = 0;
+    int r;
 
+    do
+    {
+        r = read(fd, ptr + index, sizeof(char));
+        index += r;
+    } while (r > 0);
 
-
-
-
-
+     
+    close(fd);
+    
+    return index;
 }
 
 //Do not change the main() function
