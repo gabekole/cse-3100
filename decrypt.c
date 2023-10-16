@@ -72,7 +72,12 @@ int in_dict(char *word)
 void decryption(unsigned char key, unsigned char shift, const int *encrypted, int len, char *decrypted)
 {
 
+    for(int i = 0; i < len; i++)
+    {
+        char chunk = (char) ( (encrypted[i] ^ key) >> shift );
 
+        decrypted[i] = chunk;
+    }
 
 
 }
@@ -81,15 +86,17 @@ void decryption(unsigned char key, unsigned char shift, const int *encrypted, in
 //calculate a score for a message msg
 //the score is used to determine whether msg is the original message
 int message_score(const char *msg)
-{
+{ 
+    char* token = strtok(msg, " - ");
+    int score = 0;
 
+    while (token != NULL) {
+        if(in_dict(token))
+            score += 1;
+        token = strtok(NULL, " - ");
+    }
 
-
-
-
-
-
-
+    return score;
 }
 
 //search using all the (key, shift) combinations
