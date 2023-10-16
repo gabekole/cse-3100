@@ -44,14 +44,30 @@ void read_file_to_array(char *filename)
 int in_dict(char *word)
 {
 
-    int length = MAX_WORD_COUNT;
+    // int length = MAX_WORD_LENGTH;
+    // for(int i = 0; i < length -1; i++)
+    // {
+    //     if(strncmp(word, words[i], MAX_WORD_LENGTH) == 0)
+    //         return 1;
+    // }
     
-    for(int i = 0; i < length -1; i++)
-    {
-        if(strncmp(word, words[i], MAX_WORD_LENGTH) == 0)
-            return 1;
+    int left = 0;
+    int mid;
+    int right = MAX_WORD_COUNT - 1;
+
+    while(left <= right){
+        mid = (left + right)/2;
+        int wordDiff = strcmp(word, words[mid]);
+        printf("%s, %s, %d %d\n", word, words[mid], wordDiff, mid);
+        if (wordDiff == 0){
+            return 1; // FOUND WORD
+        } else if (wordDiff > 0){
+            left = mid + 1;
+        } else if (wordDiff < 0){
+            right = mid - 1;
+        }
     }
- 
+
     return 0; // NOT FOUND
 }
 
@@ -164,9 +180,11 @@ int main(int argc, char *argv[])
 	char message[MAX];
 	strcpy(message, "");
     
-	search(encrypted, len, message);
+	// search(encrypted, len, message);
 
-	printf("%s\n", message);
+
+	// printf("%s\n", message);
+    printf("%d\n", in_dict("hello"));
 
 	return 0;
 }
