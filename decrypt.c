@@ -87,13 +87,13 @@ void decryption(unsigned char key, unsigned char shift, const int *encrypted, in
 //the score is used to determine whether msg is the original message
 int message_score(const char *msg)
 { 
-    char* token = strtok(msg, " - ");
+    char* token = strtok(msg, " ");
     int score = 0;
 
     while (token != NULL) {
         if(in_dict(token))
             score += 1;
-        token = strtok(NULL, " - ");
+        token = strtok(NULL, " ");
     }
 
     return score;
@@ -147,8 +147,8 @@ int read_encrypted(char *filename, int *encrypted)
 
      
     close(fd);
-    
-    return index;
+
+    return index / sizeof(int);
 }
 
 //Do not change the main() function
@@ -164,6 +164,7 @@ int main(int argc, char *argv[])
 
 	int encrypted[MAX];
 	int len = read_encrypted(argv[1], encrypted);
+    
 	
 	char message[MAX];
 	strcpy(message, "");
