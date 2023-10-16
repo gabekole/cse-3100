@@ -58,7 +58,7 @@ int in_dict(char *word)
     while(left <= right){
         mid = (left + right)/2;
         int wordDiff = strcmp(word, words[mid]);
-        printf("%s, %s, %d %d\n", word, words[mid], wordDiff, mid);
+        // printf("%s, %s, %d %d\n", word, words[mid], wordDiff, mid);
         if (wordDiff == 0){
             return 1; // FOUND WORD
         } else if (wordDiff > 0){
@@ -180,11 +180,11 @@ int main(int argc, char *argv[])
 	char message[MAX];
 	strcpy(message, "");
     
-	// search(encrypted, len, message);
+	search(encrypted, len, message);
 
 
-	// printf("%s\n", message);
-    printf("%d\n", in_dict("hello"));
+	printf("%s\n", message);
+    // printf("%d\n", in_dict("hello"));
 
 	return 0;
 }
