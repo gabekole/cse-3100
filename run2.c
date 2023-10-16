@@ -45,7 +45,7 @@ int main(int argc, char ** argv)
     }
     else if(child_2 == 0)
     {        
-        execvp("ls", argv + 3);
+        execvp(argv[3], argv + 3);
         perror("execvp");
         exit(1);
     }
