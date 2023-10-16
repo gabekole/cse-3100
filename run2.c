@@ -26,7 +26,7 @@ int main(int argc, char ** argv)
     }
     else if(child == 0)
     {
-        int result = execlp(argv[1], argv[1], argv[2], NULL);
+        execlp(argv[1], argv[1], argv[2], NULL);
         perror("execlp");
         exit(1);
     }
@@ -44,7 +44,7 @@ int main(int argc, char ** argv)
     }
     else if(child_2 == 0)
     {        
-        int result = execvp("ls", argv + 3);
+        execvp("ls", argv + 3);
         perror("execvp");
         exit(1);
     }
