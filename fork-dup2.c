@@ -51,6 +51,8 @@ int main(int argc, char *argv[])
         dup2(fd, STDOUT_FILENO);
 
         printf("%s\n", buffer);
+
+		close(fd);
         exit(0);
 	}
 
