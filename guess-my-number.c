@@ -216,7 +216,6 @@ int main(int argc, char *argv[])
     int send = fdp[1];
     int receive = fdc[0];
 
-    int max;
     read(receive, &max, sizeof(max));
     
     do { 
@@ -228,6 +227,7 @@ int main(int argc, char *argv[])
         //     wait for the result from the child
         write(send, &guess, sizeof(guess));
 
+
         int result;
         read(receive, &result, sizeof(result));
 
@@ -235,7 +235,10 @@ int main(int argc, char *argv[])
             min = guess + 1;
         else if (result < 0)
             max = guess - 1;
-    } while (result != 0);
+        else if (result == 0)
+            break;
+    
+    } while (1);
 
     // flush stdout buffer
     fflush(stdout);
@@ -248,6 +251,7 @@ int main(int argc, char *argv[])
 
     char buf[100];
     read(receive, buf, 100);
+    printf("%s", buf);
 
     waitpid(pid, NULL, 0);
 
