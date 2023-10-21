@@ -111,8 +111,8 @@ void    child_main(int fdp[], int fdc[], int seed)
     gmn_init(&gmn, seed);
 
     // TODO
-    //  close unused file descriptors
-    //  send max value to the parent 
+    //  close unused file descriptors -/
+    //  send max value to the parent -/
     //  repeat the following until guess from parent is correct 
     //      wait for a guess from parent 
     //      call gmn_check() 
@@ -122,8 +122,27 @@ void    child_main(int fdp[], int fdc[], int seed)
     close(fdp[1]);
     close(fdc[0]);
 
+    int send = fdc[1];
+    int receive = fdp[0];
+
+    int maxVal = gmn_get_max();
+    write(send, &maxVal, sizeof(maxVal));
     
+    int guess;
+    int guessResult;
+    do
+    {
+        read(receive, &guess, sizeof(guess));
+        guessResult = gmn_check(&gmn, guess);
+        write(send, &guessResult, sizeof(guessResult));
+    } while(guessResult != 0);
+
+    char *msg = gmn_get_message(&gmn);
     
+    write(send, msg, strlen(msg) + 1);
+
+    close(send);
+    close(receive);
 
     exit(EXIT_SUCCESS);
 }
@@ -192,6 +211,13 @@ int main(int argc, char *argv[])
     // TODO
     //      close unused pipe file descriptor
     //      get max from the child
+    close(fdp[0]);
+    close(fdc[1]);
+    int send = fdp[1];
+    int receive = fdc[0];
+
+    int max;
+    read(receive, &max, sizeof(max));
     
     do { 
         guess = (min + max)/2;
@@ -200,6 +226,10 @@ int main(int argc, char *argv[])
         // TODO
         //     send guess to the child
         //     wait for the result from the child
+        write(send, &guess, sizeof(guess));
+
+        int result;
+        read(receive, &result, sizeof(result));
 
         if (result > 0)
             min = guess + 1;
@@ -214,7 +244,16 @@ int main(int argc, char *argv[])
     //      receive the final message and print it to stdout
     //      close all pipe file descriptors
     //wait for the child process to finish
+
+
+    char buf[100];
+    read(receive, buf, 100);
+
+    waitpid(pid, NULL, 0);
+
     wait(NULL);
+    close(send);
+    close(receive);
     return 0;
 }
 
