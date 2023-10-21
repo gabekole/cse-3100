@@ -38,7 +38,7 @@ void write_solution(int b[], int moves, int pd)
     }
     strcat(buffer, "\n");
     //Add one line of code to write the buffer to the pipe pd
-
+    write(pd, buffer, strlen(buffer) + 1);
 }
 
 int read_solution(int pd, char buffer[])
@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
                 //If we find a solution, we write the solution to the pipe
                 if(a[cur]==0)
                 {
-                    b[moves - 1] = cur;
+                    b[moves] = cur;
                     write_solution(b, moves, pd[1]);
                     //It is crucial to close pd[1] here
                     close(pd[1]);
@@ -112,8 +112,9 @@ int main(int argc, char *argv[])
                 {
                     //Add your code here
 
-
-
+                    cur += a[cur];
+                    b[moves] = cur;
+                    moves += 1;
                 }
             }
             else
@@ -124,7 +125,7 @@ int main(int argc, char *argv[])
                 //If we find a solution, we write the solution to the pipe
                 if(a[cur]==0)
                 {
-                    b[moves - 1] = cur;
+                    b[moves] = cur;
                     write_solution(b, moves, pd[1]);
                     //It is crucial to close pd[1] here
                     close(pd[1]);
@@ -134,11 +135,14 @@ int main(int argc, char *argv[])
                 {
                     //Add your code here
 
-
+                    cur -= a[cur];
+                    b[moves] = cur;
+                    moves += 1;
 
                 }
             }
         }
+
         //It is crucial to close pd[1] here
         close(pd[1]);
         //The following return statement is crucial, why?
@@ -159,6 +163,8 @@ int main(int argc, char *argv[])
     //Next we read results from the pipe and write them into the array results
 	//All the previous close(pd[1]) statements are neccesary. Otherwise, 
 	//read_solution() will not finish since we can never reach EOF for this pipe.
+
+
     while(read_solution(pd[0], buffer))
     {
         strcpy(results[count++], buffer);
@@ -169,7 +175,7 @@ int main(int argc, char *argv[])
     int min_k = 0;
     for(int i = 1; i< count; i++)
     {
-        if(strlen(results[i]) < strlen(results[min_k]))
+        if(strlen(results[i]) < strlen(results[min_k]) && strlen(results[i]) != 0)
         {
             min_len = strlen(results[i]);
             min_k = i;
