@@ -227,18 +227,14 @@ int main(int argc, char *argv[])
         //     wait for the result from the child
         write(send, &guess, sizeof(guess));
 
-
-        int result;
         read(receive, &result, sizeof(result));
 
         if (result > 0)
             min = guess + 1;
         else if (result < 0)
             max = guess - 1;
-        else if (result == 0)
-            break;
     
-    } while (1);
+    } while (result != 0);
 
     // flush stdout buffer
     fflush(stdout);
