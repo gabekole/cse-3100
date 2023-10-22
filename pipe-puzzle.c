@@ -175,11 +175,14 @@ int main(int argc, char *argv[])
     int min_k = 0;
     for(int i = 1; i< count; i++)
     {
+        if(strlen(results[i]) > 0){
             if(strlen(results[i]) < strlen(results[min_k]))
             {
                 min_len = strlen(results[i]);
                 min_k = i;
             }
+        }
+
     }
     //Print the shortest solution
     printf("%d moves in the shortest solution.\n", min_len/4);
