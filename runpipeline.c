@@ -213,6 +213,8 @@ int main(int argc, char **argv)
     Program programs[MAX_NUM_PROGRAMS];
     int     num_programs;
 
+    int test = open("./newfile.txt", O_RDWR | O_CREAT);
+
     if (argc <= 1) 
         die ("Specify at least one program to run. Multiple programs are separated by --");
 
