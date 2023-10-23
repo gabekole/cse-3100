@@ -77,16 +77,23 @@ void start_program(Program *programs, int num_programs, int cur)
     
     if(child == 0)
     {
-        dup2(programs[cur].fd_out, STDOUT_FILENO);
-        dup2(programs[cur].fd_in, STDIN_FILENO);
+        if(programs[cur].fd_out > 0)
+            dup2(programs[cur].fd_out, STDOUT_FILENO);
 
-        execv(programs[cur].argv[0], programs[cur].argv);
+        if(programs[cur].fd_in > 0)
+            dup2(programs[cur].fd_in, STDIN_FILENO);
+
+
+        // fprintf(stderr, "%s : %d, %d\n", programs[cur].argv[0], programs[cur].fd_in, programs[cur].fd_out);
+        execvp(programs[cur].argv[0], programs[cur].argv);
         // CHECK EXECV error
     }
+    programs[cur].pid = child;
 
-    close(programs[cur].fd_in);
-    close(programs[cur].fd_out);
-
+    if(programs[cur].fd_in > 0)
+        close(programs[cur].fd_in);
+    if(programs[cur].fd_out > 0)
+        close(programs[cur].fd_out);
 }
 
 /* Wait on a program. 
@@ -108,7 +115,7 @@ int wait_on_program(Program *prog)
         return -1;
  
     // TODO 
-    waitpid(prog->pid, exitStatus, 0);
+    waitpid(prog->pid, &exitStatus, 0);
 
     return WEXITSTATUS(exitStatus); 
 }
@@ -132,14 +139,12 @@ void prepare_pipes(Program *programs, int num_programs)
 {
     for(int i = 0; i < num_programs - 1; i++)
     {
-        Program first = programs[i];
-        Program second = programs[i + 1];
-
         int pd[2];
-        pipe(pd);
+        if( pipe(pd) == -1 )
+            die("pipe() failed.");
 
-        first.fd_out = pd[1];
-        second.fd_in = pd[0];
+        programs[i].fd_out = pd[1];
+        programs[i + 1].fd_in = pd[0];
     }
 }
 
