@@ -70,6 +70,7 @@ typedef struct program_tag {
 void start_program(Program *programs, int num_programs, int cur) 
 {
     // TODO
+    
 }
 
 /* Wait on a program. 
@@ -91,6 +92,8 @@ int wait_on_program(Program *prog)
         return -1;
  
     // TODO 
+    waitpid(prog->pid, exitStatus, 0);
+
     return WEXITSTATUS(exitStatus); 
 }
 
