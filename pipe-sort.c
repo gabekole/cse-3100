@@ -111,19 +111,55 @@ void pipe_sort(int seed, int n, int print_sorted, int num_printed){
 
     // TODO
     // create 2 child processes to sort arrays a and b, into increasing order
-    //
-    //  child 1:  
-    //      close file descriptors that are not needed
-    //      call qsort() to sorts a, 
-    //      writes sorted integers to pipe 1 (pd1)
-    //      close file descriptor(s) and exit
-    //
-    //  child 2:  
-    //      close file descriptors that are not needed
-    //      call qsort() to sorts b, 
-    //      writes sorted integers to pipe 2 (pd2)
-    //      close file descriptor(s) and exit
-    //
+    pid_t root_child = fork();
+    if(root_child < 0)
+        die("fork() failed.");
+
+    if(root_child == 0)
+    {
+        close(pd1[0]);
+        close(pd2[0]);
+
+        pid_t second_child = fork();
+        if(second_child < 0)
+            die("fork() failed.");
+
+        if(second_child == 0)
+        {
+            close(pd2[1]);
+            //  child 1:  
+            //      close file descriptors that are not needed
+            //      call qsort() to sorts a, 
+            //      writes sorted integers to pipe 1 (pd1)
+            //      close file descriptor(s) and exit
+            
+
+            qsort(a, half, sizeof(int), compare_int);
+            write(pd1[1], a, sizeof(int)*half);
+            close(pd1[1]);
+        }
+        else
+        {
+            close(pd1[1]);
+            //  child 2:  
+            //      close file descriptors that are not needed
+            //      call qsort() to sorts b, 
+            //      writes sorted integers to pipe 2 (pd2)
+            //      close file descriptor(s) and exit
+            qsort(b, half, sizeof(int), compare_int);
+            write(pd2[1], b, sizeof(int)*half);
+            close(pd2[1]);
+        }
+
+        waitpid(second_child, NULL, 0);
+        exit(0);
+    }
+
+    waitpid(root_child, NULL, 0);
+
+    read(pd1[0], a, sizeof(int)*5);
+    read(pd2[0], b, sizeof(int)*5);
+
     // The parent process reads sorted integers from child processes. 
     //      Results from child 1 are saved in a. 
     //      Results from child 2 are saved in b. 
@@ -138,4 +174,5 @@ void pipe_sort(int seed, int n, int print_sorted, int num_printed){
     merge(a, b, sorted, half);
     if (print_sorted)
         print_array(sorted, n, num_printed);
+
 }
