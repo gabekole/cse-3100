@@ -157,8 +157,8 @@ void pipe_sort(int seed, int n, int print_sorted, int num_printed){
 
     waitpid(root_child, NULL, 0);
 
-    read(pd1[0], a, sizeof(int)*5);
-    read(pd2[0], b, sizeof(int)*5);
+    read(pd1[0], a, sizeof(int)*half);
+    read(pd2[0], b, sizeof(int)*half);
 
     close(pd1[0]);
     close(pd1[1]);
