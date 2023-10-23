@@ -38,7 +38,7 @@ void write_solution(int b[], int moves, int pd)
     }
     strcat(buffer, "\n");
     //Add one line of code to write the buffer to the pipe pd
-
+    write(pd, buffer, moves*4);
 }
 
 int read_solution(int pd, char buffer[])
@@ -93,52 +93,66 @@ int main(int argc, char *argv[])
     if(pid == 0)
     {
         //We close pd[0] since child process do not need to read from the pipe
-        close(pd[0]);
-        for(int i = 0; i< n; i++)
-        {
-            pid_t cpid = fork();
-            if(cpid == 0)
-            {   
-                //If we find a solution, we write the solution to the pipe
-                if(a[cur]==0)
-                {
-                    b[moves - 1] = cur;
-                    write_solution(b, moves, pd[1]);
-                    //It is crucial to close pd[1] here
-                    close(pd[1]);
-                    return 0;
-                }
-                else if(cur + a[cur] >= 0 && cur + a[cur] <n)
-                {
-                    //Add your code here
+
+        // close(pd[0]);
+        // for(int i = 0; i< n; i++)
+        // {
+        //     pid_t cpid = fork();
+        //     if(cpid == 0)
+        //     {   
+        //         //If we find a solution, we write the solution to the pipe
+        //         if(a[cur]==0)
+        //         {
+        //             b[moves] = cur;
+        //             write_solution(b, moves, pd[1]);
+        //             //It is crucial to close pd[1] here
+        //             close(pd[1]);
+        //             return 0;
+        //         }
+        //         else if(cur + a[cur] >= 0 && cur + a[cur] <n)
+        //         {
+        //             //Add your code here
+        //             cur = cur + a[cur];
+        //             b[moves] = cur;
+        //             moves++;
+        //         }
+        //     }
+        //     else
+        //     {
+        //         int status;
+		// 		//wait for the child process to finish
+        //         waitpid(cpid, &status, 0);
+        //         //If we find a solution, we write the solution to the pipe
+        //         if(a[cur]==0)
+        //         {
+        //             b[moves] = cur;
+        //             write_solution(b, moves, pd[1]);
+        //             //It is crucial to close pd[1] here
+        //             close(pd[1]);
+        //             return 0;
+        //         }
+        //         else if(cur - a[cur] >= 0 && cur - a[cur] <n)
+        //         {
+        //             //Add your code here
+        //             cur = cur - a[cur];
+        //             b[moves] = cur;
+        //             moves++;
+
+        //         }
+        //     }
+        // }
+        int b2[] = {10};
+        write_solution(b2, 1, pd[1]);
+
+        int b2[] = {10, 11};
+        write_solution(b2, 2, pd[1]);
+
+        int b[] = {1, 2, 3, 4, 5};
+        moves = 5;
+        write_solution(b, moves, pd[1]);
 
 
 
-                }
-            }
-            else
-            {
-                int status;
-				//wait for the child process to finish
-                waitpid(cpid, &status, 0);
-                //If we find a solution, we write the solution to the pipe
-                if(a[cur]==0)
-                {
-                    b[moves - 1] = cur;
-                    write_solution(b, moves, pd[1]);
-                    //It is crucial to close pd[1] here
-                    close(pd[1]);
-                    return 0;
-                }
-                else if(cur - a[cur] >= 0 && cur - a[cur] <n)
-                {
-                    //Add your code here
-
-
-
-                }
-            }
-        }
         //It is crucial to close pd[1] here
         close(pd[1]);
         //The following return statement is crucial, why?
