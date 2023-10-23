@@ -89,9 +89,9 @@ int wait_on_program(Program *prog)
 
     if (prog->pid < 0)
         return -1;
-
-    // TODO
-    return WEXITSTATUS(exitStatus);
+ 
+    // TODO 
+    return WEXITSTATUS(exitStatus); 
 }
 
 /* This function creates pipes to be used for connecting two pipeline stages.
@@ -111,7 +111,17 @@ int wait_on_program(Program *prog)
  */
 void prepare_pipes(Program *programs, int num_programs)
 {
-    // TODO
+    for(int i = 0; i < num_programs - 1; i++)
+    {
+        Program first = programs[i];
+        Program second = programs[i + 1];
+
+        int pd[2];
+        pipe(pd);
+
+        first.fd_out = pd[1];
+        second.fd_in = pd[0];
+    }
 }
 
 /*********************************************************/
@@ -148,7 +158,7 @@ int parse_command_line(Program *progs, int max_num_progs, int argc, char **argv)
     while (cur_arg < argc) {
         // get arguments for a new program
 
-        if (prog_count == max_num_progs) 
+        if (prog_count >= max_num_progs) 
             die("Too many programs.");
 
         // allocate space for argv for progs[prog_count]
