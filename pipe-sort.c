@@ -160,6 +160,11 @@ void pipe_sort(int seed, int n, int print_sorted, int num_printed){
     read(pd1[0], a, sizeof(int)*5);
     read(pd2[0], b, sizeof(int)*5);
 
+    close(pd1[0]);
+    close(pd1[1]);
+    close(pd2[0]);
+    close(pd2[1]);
+
     // The parent process reads sorted integers from child processes. 
     //      Results from child 1 are saved in a. 
     //      Results from child 2 are saved in b. 
