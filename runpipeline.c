@@ -70,7 +70,23 @@ typedef struct program_tag {
 void start_program(Program *programs, int num_programs, int cur) 
 {
     // TODO
+    pid_t child = fork();
+
+    if(child < 0)
+        die("fork() failed.");
     
+    if(child == 0)
+    {
+        dup2(programs[cur].fd_out, STDOUT_FILENO);
+        dup2(programs[cur].fd_in, STDIN_FILENO);
+
+        execv(programs[cur].argv[0], programs[cur].argv);
+        // CHECK EXECV error
+    }
+
+    close(programs[cur].fd_in);
+    close(programs[cur].fd_out);
+
 }
 
 /* Wait on a program. 
