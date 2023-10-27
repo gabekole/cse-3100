@@ -66,8 +66,8 @@ void run_search(int n, int m)
                 //TODO
                 //fill in code below
 		//note this is process A
-                close(pd1[1]);
-                close(pd2[0]);
+                close(pd2[1]);
+                close(pd1[0]);
 
 		srand(3100);
 
@@ -85,22 +85,23 @@ void run_search(int n, int m)
 		//TODO
 		//complete the following line of code
 
-                while(read_int(pd1[0], &v)!=0)
+                while(read_int(pd2[0], &v)!=0)
                 {
 			//TODO
 			//fill in code below
-                        write_int(A[round]);
+                        write_int(pd1[1], A[round]);
                         round++;
                 }
 		//TODO
 		//fill in code below
-                close(pd1[0]);
-                close(pd2[1]);
+                close(pd2[0]);
+                close(pd1[1]);
                 exit(0);
         }
 	//TODO
 	//fill in code below
-
+        close(pd2[0]);
+        close(pd1[1]);
 
 
         int pd3[2];
@@ -124,6 +125,8 @@ void run_search(int n, int m)
         {
 		//fill in code below
 		//note this is process B
+                close(pd3[0]);
+                close(pd4[1]);
 
 		srand(3504);
 
@@ -138,19 +141,23 @@ void run_search(int n, int m)
                 int v;
                 //TODO
                 //complete the following line of code
-                while(read_int(, &v)!=0)
+                while(read_int(pd4[0], &v)!=0)
                 {
                         //TODO
                         //fill in code below
-
+                        int res = in_array(B, n, v);
+                        write_int(pd3[1], res);
                 }
 
 		//fill in code below
-	
+                close(pd3[1]);
+                close(pd4[0]);
+                exit(0);
 	}
         //TODO
         //fill in code below
-
+        close(pd3[1]);
+        close(pd4[0]);
 
 	int v1, v2;
         int count = 0;
@@ -170,5 +177,8 @@ void run_search(int n, int m)
 	printf("There are %d pairs that add up to %d.\n", count, m);
 	//TODO
 	//fill in code below
-
+        close(pd3[0]);
+        close(pd4[1]);
+        close(pd2[1]);
+        close(pd1[0]);
 }
