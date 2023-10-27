@@ -23,7 +23,24 @@ int read_int(int pd, int *value)
 //otherwise, return 0
 int in_array(int a[], int n, int v)
 {
+        int l = 0;
+        int r = n;
+        int mid = l + (r - l)/2;
 
+        while(l <= r)
+        {
+                mid = l + (r - l)/2;
+
+                if(a[mid] == v)
+                        return 1;
+                
+                if(a[mid] > v)
+                        r = mid - 1;
+                else
+                        l = mid + 1;
+        }
+
+        return 0;
 }
 
 void run_search(int n, int m)
