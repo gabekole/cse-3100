@@ -66,7 +66,8 @@ void run_search(int n, int m)
                 //TODO
                 //fill in code below
 		//note this is process A
-
+                close(pd1[1]);
+                close(pd2[0]);
 
 		srand(3100);
 
@@ -84,15 +85,18 @@ void run_search(int n, int m)
 		//TODO
 		//complete the following line of code
 
-                while(read_int(, &v)!=0)
+                while(read_int(pd1[0], &v)!=0)
                 {
 			//TODO
 			//fill in code below
-
+                        write_int(A[round]);
+                        round++;
                 }
 		//TODO
 		//fill in code below
-
+                close(pd1[0]);
+                close(pd2[1]);
+                exit(0);
         }
 	//TODO
 	//fill in code below
