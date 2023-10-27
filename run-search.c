@@ -153,7 +153,7 @@ void run_search(int n, int m)
                 close(pd3[1]);
                 close(pd4[0]);
                 close(pd2[1]);
-                close(pd1[0]);}
+                close(pd1[0]);
                 exit(0);
 	}
         //TODO
