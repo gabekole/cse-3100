@@ -152,6 +152,8 @@ void run_search(int n, int m)
 		//fill in code below
                 close(pd3[1]);
                 close(pd4[0]);
+                close(pd2[1]);
+                close(pd1[0]);
                 exit(0);
 	}
         //TODO
