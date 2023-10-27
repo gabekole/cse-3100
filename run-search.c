@@ -147,6 +147,7 @@ void run_search(int n, int m)
                         //fill in code below
                         int res = in_array(B, n, v);
                         write_int(pd3[1], res);
+
                 }
 
 		//fill in code below
@@ -179,14 +180,14 @@ void run_search(int n, int m)
 	printf("There are %d pairs that add up to %d.\n", count, m);
 	//TODO
 	//fill in code below
-
-        write_int(pid, 0);
-        write_int(pid1, 0);
-        waitpid(pid, NULL, 0);
-        waitpid(pid1, NULL, 0);
-
         close(pd3[0]);
         close(pd4[1]);
         close(pd2[1]);
         close(pd1[0]);
+
+        waitpid(pid1, NULL, 0);
+        waitpid(pid, NULL, 0);
+        
+
+
 }
