@@ -16,7 +16,8 @@ void redirectStdin(const char *filename)
         }
 	//TODO
         //fill in the code below
-
+        dup2(fd, STDIN_FILENO);
+        close(fd);
 }
 
 //redirect standad output to the specified file
@@ -30,14 +31,22 @@ void redirectStdout(const char *filename)
         }
 	//TODO
 	//fill in the code below
-
+        dup2(fd, STDOUT_FILENO);
+        close(fd);
 }
 
 //TODO: imeplement the following function
-if word has letters in strict alphabetical order, return 1 else return 0
+// if word has letters in strict alphabetical order, return 1 else return 0
 int increasing(char *word)
 {
         if(strlen(word)<5) return 0;
         //TODO
-
+        int len = strlen(word);
+        for(int i = 0; i < len - 1; i++)
+        {
+                if(word[i] > word[i + 1]){
+                        return 0;
+                }
+        }
+        return 1;
 }
