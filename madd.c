@@ -15,12 +15,15 @@ static void * thread_main(void * p_arg)
 {
     // TODO
     thread_arg_t * args = (thread_arg_t *) p_arg;
-
+    double **result = args->t->data;
+    double **addend1 = args->m->data;
+    double **addend2 = args->n->data;
+    
     for(int i = args->id; i < args->m->nrows; i += NUM_THREADS)
     {
         for(int j = 0; j < args->m->ncols; j++)
         {
-            args->t->data[i][j] = args->m->data[i][j] + args->n->data[i][j];
+            result[i][j] = addend1[i][j] + addend2[i][j];
         }
     }
 
@@ -45,26 +48,17 @@ TMatrix * addMatrix_thread(TMatrix *m, TMatrix *n)
         return t;
 
     // TODO
+    pthread_t ptid1; 
+    pthread_t ptid2; 
 
-    pthread_t ptids[NUM_THREADS];
+    thread_arg_t arg1 = {0, m, n, t};
+    thread_arg_t arg2 = {1, m, n, t};
 
-    thread_arg_t args[NUM_THREADS];
+    pthread_create(&ptid1, NULL, &thread_main, &arg1);
+    pthread_create(&ptid2, NULL, &thread_main, &arg2);
 
-    for(int i = 0; i < NUM_THREADS; i++){
-        args[i] = (thread_arg_t) {i, m, n, t};
-    }
-
-
-
-    for(int i = 0; i < NUM_THREADS; i++)
-    {
-        pthread_create(& (ptids[i]) , NULL, &thread_main, & (args[i]) );
-    }
-
-    for(int i = 0; i < NUM_THREADS; i++)
-    {
-        pthread_join( ptids[i] , NULL);
-    }
+    pthread_join(ptid1, NULL);
+    pthread_join(ptid2, NULL);
 
     return t;
 }
