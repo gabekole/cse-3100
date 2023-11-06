@@ -56,7 +56,7 @@ void* thread_freq(void* threadarg)
 {
     struct thread_data* my_data = (struct thread_data*) threadarg;
 	//fill in code below, only line is needed
-    frequencies(a + my_data->i, my_data->j - my_data->i, my_data->freq);
+    frequencies(a + my_data->i, my_data->j - my_data->i + 1, my_data->freq);
     
 	pthread_exit(NULL);
 }
