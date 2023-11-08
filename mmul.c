@@ -12,23 +12,30 @@ typedef struct {
     TMatrix *m, *n, *t;
 } thread_arg_t;
 
+
 static void * thread_main(void * p_arg)
 {
     // TODO
     thread_arg_t *args = (thread_arg_t *) p_arg;
+    TMatrix *m = args->m;
+    TMatrix *n = args->n;
+    TMatrix *t = args->t;
 
-    for(int i = args->id; i < args->m->nrows; i+= NUM_THREADS)
-    {
-        for(int j = 0; j < args->n->ncols; j++)
-        {
-            for(int k = 0; k < args->n->nrows; k++)
-            {
-                args->t->data[i][j] += args->m->data[i][k] * args->n->data[k][j];
-            }
+    if (     m == NULL || n == NULL
+          || m->ncols != n->nrows   )
+        return NULL;
+
+    if (t == NULL)
+        return t;
+    for (unsigned int i = args->id; i < m->nrows; i+=NUM_THREADS)  {
+        for (unsigned int j = 0; j < n->ncols; j++) {
+            TElement sum = (TElement)0;
+            for (unsigned int k = 0; k < m->ncols; k++)
+                sum += m->data[i][k] * n->data[k][j];
+            t->data[i][j] = sum;
         }
     }
-
-    return NULL;
+    return t;
 }
 
 /* Return the sum of two matrices.
