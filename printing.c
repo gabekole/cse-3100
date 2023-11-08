@@ -139,6 +139,32 @@ void printer_single(printer_t *pprinter)
 void * printer_main(void * arg)
 {
     // TODO
+    printer_t *printer = (printer_t *) arg;
+    job_queue_t *jobs = printer->jq;
+
+    printer->njobs = 0;
+
+    int jobs_left;
+
+    pthread_mutex_lock(&jobs->mutex);
+    jobs_left = q_num_jobs(jobs);
+    pthread_mutex_unlock(&jobs->mutex);
+
+    while( 1 )
+    {
+        pthread_mutex_lock(&jobs->mutex);
+
+        jobs_left = q_num_jobs(jobs);
+        if(jobs_left <= 0)
+            break;
+
+        int time_cost = q_fetch_job(jobs, printer->id);
+        print_job(time_cost);
+        printer->njobs += 1;
+
+        pthread_mutex_unlock(&jobs->mutex);
+    }
+    
     return arg;
 }
 
