@@ -24,6 +24,7 @@ void* calculate(void* threadarg)
 {
 
     //fill in one line of code blew
+    pthread_mutex_lock(&mutex);
 
     if(n > 0)
     {
@@ -34,7 +35,8 @@ void* calculate(void* threadarg)
         n--;
     }
     //fill in one line of code below
-    
+    pthread_mutex_unlock(&mutex);
+
     pthread_exit(NULL);
 }
 
@@ -55,6 +57,7 @@ int main(int argc, char *argv[])
     int m = 2*n;
 
     //fill in one line of code below
+    pthread_mutex_init(&mutex, NULL);
 
     pthread_t threads[MAX];
     int rc, t;    
@@ -75,7 +78,9 @@ int main(int argc, char *argv[])
             exit(-1);
         }
     }
+
     //fill in one line of code below
+    pthread_mutex_destroy(&mutex);
 
     unsigned long correct_sum = k*(k+1)*(2*k+1)/6;
     printf("thread sum : %ld correct sum : %ld\n", sum, correct_sum);
