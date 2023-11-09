@@ -146,23 +146,26 @@ void * printer_main(void * arg)
 
     int jobs_left;
 
-    pthread_mutex_lock(&jobs->mutex);
-    jobs_left = q_num_jobs(jobs);
-    pthread_mutex_unlock(&jobs->mutex);
 
-    while( 1 )
+    pthread_mutex_lock(&(jobs->mutex));
+    jobs_left = q_num_jobs(jobs);
+    pthread_mutex_unlock(&(jobs->mutex));
+
+    while( jobs_left > 0 )
     {
         pthread_mutex_lock(&jobs->mutex);
 
         jobs_left = q_num_jobs(jobs);
-        if(jobs_left <= 0)
+        if(jobs_left <= 0){
+            pthread_mutex_unlock(&jobs->mutex);
             break;
+        }
 
         int time_cost = q_fetch_job(jobs, printer->id);
+        pthread_mutex_unlock(&jobs->mutex);
+
         print_job(time_cost);
         printer->njobs += 1;
-
-        pthread_mutex_unlock(&jobs->mutex);
     }
     
     return arg;
@@ -201,9 +204,12 @@ int main(int argc, char *argv[])
     srand(seed);
 
     // insert necessary init and destroy functions below
+    pthread_mutex_t lock;
+    pthread_mutex_init( &lock, NULL);
 
     // define job_queue and initialize it
     job_queue_t job_queue;
+    job_queue.mutex = lock;
 
     q_init(&job_queue, num_jobs);
 
@@ -238,7 +244,7 @@ int main(int argc, char *argv[])
 
     for(int i = 0; i < num_printers; i++)
     {
-        pthread_create(printers[i].thread_id, NULL, printer_main, &printers[i]);
+        pthread_create(&printers[i].thread_id, NULL, &printer_main, &printers[i]);
     }
 
     for(int i = 0; i < num_printers; i++)
@@ -247,6 +253,7 @@ int main(int argc, char *argv[])
     }
 
     q_destroy(&job_queue);
+    pthread_mutex_destroy(&job_queue.mutex);
 
     print_printer_summary(printers, num_printers);
 
