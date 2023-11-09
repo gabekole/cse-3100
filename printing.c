@@ -226,6 +226,26 @@ int main(int argc, char *argv[])
      *  Also, properly init and desctroy mutex.
      *  */
 
+    pthread_t printer_threads[num_printers];
+
+    for(int i = 0; i < num_printers; i++)
+    {
+        printers[i].id = i;
+        printers[i].jq = &job_queue;
+        printers[i].njobs = 0;
+        printers[i].thread_id = printer_threads[i];
+    }
+
+    for(int i = 0; i < num_printers; i++)
+    {
+        pthread_create(printers[i].thread_id, NULL, printer_main, &printers[i]);
+    }
+
+    for(int i = 0; i < num_printers; i++)
+    {
+        pthread_join(printers[i].thread_id, NULL);
+    }
+
     q_destroy(&job_queue);
 
     print_printer_summary(printers, num_printers);
