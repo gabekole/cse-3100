@@ -173,7 +173,7 @@ void * thread_c(void * arg_in)
 
     do
     {
-        pthread_mutex_lock(&arg->max);
+        pthread_mutex_lock(&arg->mutex);
         pthread_cond_wait(&arg->cond_guess, &arg->mutex);
         guess_result = gmn_check(&gmn, arg->guess);
 
@@ -183,10 +183,10 @@ void * thread_c(void * arg_in)
 
         if(guess_result == 0)
         {
-            sprintf(arg->message, "It took you %d attempt(s) to guess the number %d.", guess_count, arg->guess);
+            sprintf(arg->message, "It took you %d attempt(s) to guess the number %d.\n", guess_count, arg->guess);
         }
 
-        pthread_mutex_unlock(&arg->max);
+        pthread_mutex_unlock(&arg->mutex);
     } while(guess_result != 0);
 
     return NULL;
@@ -279,7 +279,7 @@ int main(int argc, char *argv[])
     pthread_t threadp;
 
     pthread_create(&threadc, NULL, &thread_c, &arg);
-    pthread_create(&threadc, NULL, &thread_p, &arg);
+    pthread_create(&threadp, NULL, &thread_p, &arg);
 
     pthread_join(threadc, NULL);
     pthread_join(threadp, NULL);
