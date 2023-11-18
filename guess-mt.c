@@ -8,7 +8,6 @@
 #include <pthread.h>
 
 // search TODO to find the place you need to work on
-
 void die(char *s)
 {
     fprintf(stderr, "Error: %s\n", s);
@@ -163,6 +162,33 @@ void * thread_c(void * arg_in)
     //      call gmn_check() 
     //      send the result and, if the guess is correct, the final message to thread_p
 
+    arg->max = gmn_get_max();
+
+    pthread_mutex_lock(&arg->mutex);
+    pthread_cond_signal(&arg->cond_result);
+    pthread_mutex_unlock(&arg->mutex);
+
+    int guess_result;
+    int guess_count = 0;
+
+    do
+    {
+        pthread_mutex_lock(&arg->max);
+        pthread_cond_wait(&arg->cond_guess, &arg->mutex);
+        guess_result = gmn_check(&gmn, arg->guess);
+
+        arg->result = guess_result;
+        guess_count++;
+        pthread_cond_signal(&arg->cond_result);
+
+        if(guess_result == 0)
+        {
+            sprintf(arg->message, "It took you %d attempt(s) to guess the number %d.", guess_count, arg->guess);
+        }
+
+        pthread_mutex_unlock(&arg->max);
+    } while(guess_result != 0);
+
     return NULL;
 }
 
@@ -183,6 +209,11 @@ void * thread_p(void *arg_in)
     // TODO
     //      get max from thread_c
 
+    pthread_mutex_lock(&arg->mutex);
+    pthread_cond_wait(&arg->cond_result, &arg->mutex);
+    max = arg->max;
+    pthread_mutex_unlock(&arg->mutex);
+
     do { 
         guess = (min + max)/2;
         printf("My guess: %d\n", guess);
@@ -190,6 +221,12 @@ void * thread_p(void *arg_in)
         // TODO
         //     send guess to thread_c
         //     wait for the result from thread_c (copy arg->result to result!)
+        pthread_mutex_lock(&arg->mutex);
+        arg->guess = guess;
+        pthread_cond_signal(&arg->cond_guess);
+        pthread_cond_wait(&arg->cond_result, &arg->mutex);
+        result = arg->result;
+        pthread_mutex_unlock(&arg->mutex);
 
         if (result > 0)
             min = guess + 1;
@@ -234,7 +271,18 @@ int main(int argc, char *argv[])
 
     // TODO
     // Create the two threads and wait for them to finish
+    pthread_cond_init(&arg.cond_guess, NULL);
+    pthread_cond_init(&arg.cond_result, NULL);
+    pthread_mutex_init(&arg.mutex, NULL);
 
+    pthread_t threadc;
+    pthread_t threadp;
+
+    pthread_create(&threadc, NULL, &thread_c, &arg);
+    pthread_create(&threadc, NULL, &thread_p, &arg);
+
+    pthread_join(threadc, NULL);
+    pthread_join(threadp, NULL);
     
     return 0;
 }
