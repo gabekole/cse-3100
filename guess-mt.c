@@ -8,7 +8,6 @@
 #include <pthread.h>
 
 // search TODO to find the place you need to work on
-
 void die(char *s)
 {
     fprintf(stderr, "Error: %s\n", s);
@@ -282,6 +281,9 @@ int main(int argc, char *argv[])
 
     // TODO
     // Create the two threads and wait for them to finish
+    pthread_cond_init(&arg.cond_guess, NULL);
+    pthread_cond_init(&arg.cond_result, NULL);
+    pthread_mutex_init(&arg.mutex, NULL);
 
     arg.status = S_INIT;
     pthread_mutex_init(&arg.mutex, NULL);
