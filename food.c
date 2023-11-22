@@ -118,13 +118,13 @@ void* thread_produce(void* threadarg)
 		int done = 0;
 		while(!done)
 		{
-			pthread_mutex_lock(&my_data->p->mutex);
+			pthread_mutex_lock(&p->mutex);
 
 			if(q->remain >= 3){
 
-				node *n1 = remove_first(&my_data->p->head, &my_data->p->tail);
-				node *n2 = remove_first(&my_data->p->head, &my_data->p->tail);
-				node *n3 = remove_first(&my_data->p->head, &my_data->p->tail);
+				node *n1 = remove_first(&p->head, &p->tail);
+				node *n2 = remove_first(&p->head, &p->tail);
+				node *n3 = remove_first(&p->head, &p->tail);
 
 
 				add_to_buffer(n1->v, 0, my_data->q);
@@ -135,7 +135,7 @@ void* thread_produce(void* threadarg)
 				done = 1;
 			}
 
-			pthread_mutex_unlock(&my_data->p->mutex);
+			pthread_mutex_unlock(&p->mutex);
 		}
 
         pthread_exit(NULL);
@@ -221,7 +221,7 @@ int main(int argc, char *argv[])
 	int total = 0;
 	//TODO
 	//fill in code below
-	
+	total = 3*n_consumer - q->remain;
 
 	printf("total = %d\n", total);
  
