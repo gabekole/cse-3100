@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <assert.h>
+#include <string.h>
 #include "linked-list.h"
 
 #define MAX 10
@@ -26,14 +27,44 @@ void add_to_buffer(int item, int col, two_d_buffer *p)
 {
 	//TODO
 	//fill in code below
-	
+	pthread_mutex_lock(&p->mutex);
+
+
+	while( ! (p->counts[col] < MAX) )
+	{
+		pthread_cond_wait(&p->consume_cond, &p->mutex);
+	}
+
+	p->buf[p->counts[col]][col] = item;
+	p->counts[col] += 1;
+	p->remain -= 1;
+
+	pthread_cond_broadcast(&p->produce_cond);
+	pthread_mutex_unlock(&p->mutex);
 }
 
 void remove_from_buffer(int *a, int *b, int *c, two_d_buffer *p)
 {
 	//TODO
 	//fill in code below
-	
+	pthread_mutex_lock(&p->mutex);
+
+
+	while( ! (p->counts[0] > 0 && p->counts[1] > 0 && p->counts[2] > 0)) {
+		pthread_cond_wait(&p->produce_cond, &p->mutex);
+	}
+
+	*a = p->buf[0][0];
+	*b = p->buf[0][1];
+	*c = p->buf[0][2];
+
+	memcpy(p->buf, p->buf + 1, sizeof(p->buf));
+	p->counts[0] -= 1;
+	p->counts[1] -= 1;
+	p->counts[2] -= 1;
+
+	pthread_cond_broadcast(&p->consume_cond);
+	pthread_mutex_unlock(&p->mutex);
 }
 
 void prepare(int item)
@@ -52,7 +83,7 @@ struct thread_data
 
 void* thread_consume(void* threadarg)
 {
-    	struct thread_data* my_data = (struct thread_data*) threadarg;
+    struct thread_data* my_data = (struct thread_data*) threadarg;
 	int id = my_data->id;
 	list_t *p = my_data->p;
 
@@ -62,7 +93,9 @@ void* thread_consume(void* threadarg)
 	
 	//TODO
 	//fill in code below to add n1, n2, and n3 to the linked-list pointed by p
-
+	add_last(&p->head, &p->tail, n1);
+	add_last(&p->head, &p->tail, n2);
+	add_last(&p->head, &p->tail, n3);
 
 	pthread_barrier_t *p_barrier = my_data->p_barrier;
 	pthread_barrier_wait(p_barrier);
@@ -82,15 +115,23 @@ void* thread_produce(void* threadarg)
         pthread_barrier_wait(p_barrier);
 	two_d_buffer *q = my_data->q;
 
-	int done = 0;
-	while(!done)
-	{
-		//TODO
-		//fill in code below
+		int done = 0;
+		while(!done)
+		{
+			pthread_mutex_lock(&my_data->p->mutex);
 
+			if(q->remain >= 3){
+				add_to_buffer(1, 0, my_data->q);
+				add_to_buffer(2, 1, my_data->q);
+				add_to_buffer(3, 2, my_data->q);
+			}
+			else {
+				done = 1;
+			}
 
-	}
-	 
+			pthread_mutex_unlock(&my_data->p->mutex);
+		}
+
         pthread_exit(NULL);
 }
 int main(int argc, char *argv[])
@@ -140,7 +181,7 @@ int main(int argc, char *argv[])
 		//TODO
 		//complete the following line of code
 
-		rc = pthread_create(&threads[t], NULL,  , &thread_data_array[t]);
+		rc = pthread_create(&threads[t], NULL,  thread_consume, &thread_data_array[t]);
         	if (rc) {
             		printf("ERROR; return code from pthread_create() is %d\n", rc);
             		exit(-1);
@@ -155,7 +196,7 @@ int main(int argc, char *argv[])
 		thread_data_array[n_consumer + t].p_barrier = &barrier;
 		//TODO
 		//complete the follow line of code
-                rc = pthread_create(&threads[n_consumer + t], NULL, , &thread_data_array[n_consumer + t]);
+                rc = pthread_create(&threads[n_consumer + t], NULL, thread_produce, &thread_data_array[n_consumer + t]);
                 if (rc) {
                         printf("ERROR; return code from pthread_create() is %d\n", rc);
                         exit(-1);
@@ -174,7 +215,6 @@ int main(int argc, char *argv[])
 	int total = 0;
 	//TODO
 	//fill in code below
-	
 
 	printf("total = %d\n", total);
  
