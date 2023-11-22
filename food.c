@@ -14,7 +14,7 @@ typedef struct {
 } list_t;
 
 typedef struct {
-	int size;
+		int size;
         int buf[MAX][3];
         int remain;
         int counts[3];            //current indexes
@@ -121,9 +121,15 @@ void* thread_produce(void* threadarg)
 			pthread_mutex_lock(&my_data->p->mutex);
 
 			if(q->remain >= 3){
-				add_to_buffer(1, 0, my_data->q);
-				add_to_buffer(2, 1, my_data->q);
-				add_to_buffer(3, 2, my_data->q);
+
+				node *n1 = remove_first(&my_data->p->head, &my_data->p->tail);
+				node *n2 = remove_first(&my_data->p->head, &my_data->p->tail);
+				node *n3 = remove_first(&my_data->p->head, &my_data->p->tail);
+
+
+				add_to_buffer(n1->v, 0, my_data->q);
+				add_to_buffer(n2->v, 1, my_data->q);
+				add_to_buffer(n3->v, 2, my_data->q);
 			}
 			else {
 				done = 1;
@@ -215,6 +221,7 @@ int main(int argc, char *argv[])
 	int total = 0;
 	//TODO
 	//fill in code below
+	
 
 	printf("total = %d\n", total);
  
