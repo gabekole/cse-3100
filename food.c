@@ -130,6 +130,10 @@ void* thread_produce(void* threadarg)
 				add_to_buffer(n1->v, 0, my_data->q);
 				add_to_buffer(n2->v, 1, my_data->q);
 				add_to_buffer(n3->v, 2, my_data->q);
+
+				free(n1);
+				free(n2);
+				free(n3);
 			}
 			else {
 				done = 1;
