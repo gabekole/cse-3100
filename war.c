@@ -31,7 +31,7 @@ struct thread_data
 };
 
 int deck[NUM];
-char str_cards[NUM_CARDS][NUM + 1];
+char str_cards[NUM_CARDS][3];
 
 void card_symbol(int card, char *symbol)
 {
@@ -88,9 +88,10 @@ void* player_func(void* threadarg)
 		int my_card = hand[no_cards - 1];
 		//each player makes change at its own deck location
 		deck[id - 1] = my_card;
-		//fill in two lines of code
 
-
+		// TODO fill in two lines of code to achieve intended behavior
+		no_cards -= 1;
+		pthread_barrier_wait(&barrier);
 
 		//everyone is here
 		//check results
@@ -139,8 +140,8 @@ void* player_func(void* threadarg)
 			tie_count ++;
 			printf("Round %05d: player %d ties with card  %s. %2d cards in hand.\n", rounds, id, str_cards[my_card], no_cards);
 		}
-		//fill in one line of code
-	
+		// TODO fill in one line of code to achieve intended behavior
+		pthread_barrier_wait(&barrier);
 	}
 	if(rounds == MAX)
 		printf("It is a tie.\n");
