@@ -130,22 +130,28 @@ int main(int argc, char *argv[])
      *      adjust min or max if necessary
      *  print the final message, which may or may not be received with "0\n"
      *  */
-    char buf[512];
-    recv_lines(sockfd, buf, 512);
-    int max = atoi(buf);
+    recv_lines(sockfd, buf, LINE_SIZE);
+    max = atoi(buf);
 
-    int min = 0;
+    printf("%d\n", max);
+
+    min = 1;
     do {
         guess = (min + max)/2;
 
-        memset(buf, '\0', 512);
-        snprintf(buf, 512, "%d\n", guess);
+
+        printf("My guess: %d\n", guess);
+
+        memset(buf, '\0', LINE_SIZE);
+        snprintf(buf, LINE_SIZE, "%d\n", guess);
 
         send_all(sockfd, buf, strlen(buf));
 
-        memset(buf, '\0', 512);
-        recv_lines(sockfd, buf, 512);
+        memset(buf, '\0', LINE_SIZE);
+        recv_lines(sockfd, buf, LINE_SIZE);
         result = atoi(buf);
+
+        printf("%d\n", result);
 
         if (result > 0)
             min = guess + 1;
@@ -156,7 +162,6 @@ int main(int argc, char *argv[])
 
     // Buf now contains "0"+Final message
 
-    printf("%d\n", result);
     printf("%s\n", buf+1);
 
     close(sockfd);

@@ -199,9 +199,10 @@ void * thread_main(void * arg_in)
 
         result = gmn_check(&gmn, guess);
 
+
         if(result != 0){
             memset(buf, '\0', 512);
-            snprintf(buf, 512, "%d\n", gmn_get_max());
+            snprintf(buf, 512, "%d\n", result);
             send_all(sockfd, buf, strlen(buf));
         }
     } while(result != 0);
