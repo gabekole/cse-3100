@@ -184,6 +184,31 @@ void * thread_main(void * arg_in)
     //      send the result and, if the guess is correct, send the final message
     //  clean up: close FD and free memory. 
     //  Do clean up on error. See the demo code.
+    char buf[512];
+
+    memset(buf, '\0', 512);
+    snprintf(buf, 512, "%d\n", gmn_get_max());
+    send_all(sockfd, buf, strlen(buf));
+    
+    int result = 0;
+
+    do {
+        memset(buf, '\0', 512);
+        recv_lines(sockfd, buf, 512);
+        int guess = atoi(buf);
+
+        result = gmn_check(&gmn, guess);
+
+        if(result != 0){
+            memset(buf, '\0', 512);
+            snprintf(buf, 512, "%d\n", gmn_get_max());
+            send_all(sockfd, buf, strlen(buf));
+        }
+    } while(result != 0);
+
+    memset(buf, '\0', 512);
+    snprintf(buf, 512, "%d%s\n", result, gmn_get_message(&gmn));
+    send_all(sockfd, buf, strlen(buf));
 
     return NULL;
 }
