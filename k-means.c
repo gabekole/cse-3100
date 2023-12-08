@@ -173,8 +173,16 @@ void* thread_main(void* thread_arg) {
     assert(labels!=NULL);  
 
     //TODO: fill in code below
+    for(int l = 0; l < rounds; l++)
+    {
+        compute_labels(centroids, k, a, m, labels);
+        compute_centroids(centroids, k, a, m, labels);
+    }
+
+    *p_squared_intra_cluster_dist = squared_intra_cluster_dist(centroids, k, a, m, labels);
 
     
+
     pthread_exit(NULL);
 }
 
@@ -232,11 +240,18 @@ int main(int argc, char *argv[])
 
     
     // TODO: Obtain the best clustering result and print it
-    double best_d = ;
-    point_t *best_centroids = ;
+    double best_d = -1;
+    point_t *best_centroids = 0;
+
+    for(int i = 0; i < n_threads; i++) {
+        if(best_d == -1 || squared_intra_cluster_dist[i] < best_d){
+            best_d = squared_intra_cluster_dist[i];
+            best_centroids = thread_args[i].centroids;
+        }
+    }
 
 
-    print_clusters(best_centroids, k, a, m, labels);
+    print_clusters(best_centroids, k, a, m, labels); 
     printf("Squared intra-cluster distance: %lf\n", best_d);
 
     return 0;
