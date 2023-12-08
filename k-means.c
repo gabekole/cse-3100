@@ -221,9 +221,14 @@ int main(int argc, char *argv[])
     }
 
     // TODO: Create the threads
-
+    for(int i = 0; i < n_threads; i++) {
+        pthread_create(&thread_arr[i], NULL, thread_main, &thread_args[i]);
+    }
 
     // TODO: Join with the threads
+    for(int i = 0; i < n_threads; i++) {
+        pthread_join(thread_arr[i], NULL);
+    }
 
     
     // TODO: Obtain the best clustering result and print it
