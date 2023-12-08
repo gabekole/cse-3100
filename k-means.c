@@ -156,13 +156,13 @@ double clusters(point_t a[], int labels[], int m, int k, int trials, int rounds)
 void* thread_main(void* thread_arg) {
     thread_arg_t* arg = thread_arg;
     //TODO: finish the following statements
-    unsigned int id = ;
-    int k = ;
-    int m = ;
-    point_t *a = ;
-    int rounds = ;
-    point_t *centroids = ;
-    double *p_squared_intra_cluster_dist = ;
+    unsigned int id = arg->id;
+    int k = arg->k;
+    int m = arg->m;
+    point_t *a = arg->a;
+    int rounds = arg->rounds;
+    point_t *centroids = arg->centroids;
+    double *p_squared_intra_cluster_dist = arg->p_squared_intra_cluster_dist;
 
     for(int j = 0; j < k; j++) {
         int idx = rand_r(&id) % m;
