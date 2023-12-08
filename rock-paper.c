@@ -197,6 +197,7 @@ void * thread_referee(void *arg_in)
             pthread_cond_wait(&p1->cond, &p1->mutex);
         }
         choice1 = p1->value;
+        p1->status = S_INIT;
 
         pthread_mutex_unlock(&p1->mutex);
 
@@ -205,6 +206,7 @@ void * thread_referee(void *arg_in)
             pthread_cond_wait(&p2->cond, &p2->mutex);
         }
         choice2 = p2->value;
+        p1->status = S_INIT;
 
         pthread_mutex_unlock(&p2->mutex);
 
