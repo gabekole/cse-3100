@@ -39,7 +39,20 @@ void *producer(void *t)
         int v = v1 + v2;
         //Fill in code below
 
+        pthread_mutex_lock(&pdata->mutex);    
 
+        pdata->data = v;
+        pdata->n -= 1;
+        pdata->ready = pdata->ready - 1;
+
+        if(pdata->n == 0){
+            for(int i = 1; i < NUM_CONSUMERS + 1; i++)
+                pthread_cond_signal(&pdata->cond[i]);
+        } else {
+            pthread_cond_signal(&pdata->cond[v - 1]);
+        }
+        
+        pthread_mutex_unlock(&pdata->mutex);
     }
     pthread_exit(NULL);
 }
@@ -59,7 +72,24 @@ void * consumer(void *t)
 	{
         //TODO:
 		//Fill in code below
+        pthread_mutex_lock(&pdata->mutex);    
 
+        while(pdata->ready != 1){
+            pthread_cond_wait(&pdata->cond[id], &pdata->mutex);
+        }
+
+        if(pdata->data == id + 1){
+            p_count[id + 1] = p_count[id + 1] + 1;
+        }
+
+        if(pdata->n <= 0){
+            done = 1;
+        }
+        else {
+            pdata->ready = 0;
+        }
+        
+        pthread_mutex_unlock(&pdata->mutex);
 
     }
     pthread_exit(NULL);
