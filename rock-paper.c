@@ -1,3 +1,4 @@
+#define _POSIX_C_SOURCE 200112L /* Or higher */
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -127,6 +128,17 @@ void * thread_player(void *arg_in)
         // TODO
         //  send choice r to referee
         //  get the result from referee and save it into outcome
+        pthread_mutex_lock(&choice->mutex);
+
+        choice->value = r;
+        choice->status = S_READY;
+        
+        pthread_cond_signal(&choice->cond);
+
+        pthread_mutex_unlock(&choice->mutex);
+
+        pthread_barrier_wait(&result->barrier);
+        outcome = result->value;
 
         if (outcome == 0) 
             arg->n_ties ++;
@@ -177,7 +189,28 @@ void * thread_referee(void *arg_in)
         //
         // The big challenge is synchronization.
 
+
         int choice1, choice2, outcome;
+
+        pthread_mutex_lock(&p1->mutex);
+        while(p1->status != S_READY){
+            pthread_cond_wait(&p1->cond, &p1->mutex);
+        }
+        int choice1 = p1->value;
+
+        pthread_mutex_unlock(&p1->mutex);
+
+        pthread_mutex_lock(&p2->mutex);
+        while(p2->status != S_READY){
+            pthread_cond_wait(&p2->cond, &p2->mutex);
+        }
+        int choice2 = p2->value;
+
+        pthread_mutex_unlock(&p2->mutex);
+
+        outcome = compare_choices(choice1, choice2);
+        result->value = outcome;
+        pthread_barrier_wait(&result->barrier);
 
     }
     return NULL;
