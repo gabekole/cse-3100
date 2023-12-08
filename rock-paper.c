@@ -117,7 +117,7 @@ void * thread_player(void *arg_in)
     
     for (int i = 0; i < arg->n_rounds; i ++ ) {
         // Add THINKING() at different locations to test
-        // THINKING();
+        THINKING();
 
         int r = MAKE_CHOICE(); 
         int outcome = 0;
