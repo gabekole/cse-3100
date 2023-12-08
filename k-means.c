@@ -181,7 +181,7 @@ void* thread_main(void* thread_arg) {
 
     *p_squared_intra_cluster_dist = squared_intra_cluster_dist(centroids, k, a, m, labels);
 
-    
+    free(labels);
 
     pthread_exit(NULL);
 }
